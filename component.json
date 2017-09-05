@@ -91,7 +91,7 @@
           "config": {
             "label": "REST API",
             "required": true,
-            "viewClass": "RestAPIView"
+            "viewClass": "RESTAPIView"
         }
       }
     }
