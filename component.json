@@ -86,14 +86,14 @@
       "metadata": {
         "in": "./lib/schemas/httpRequest.in.json",
         "out": "./lib/schemas/httpRequest.out.json"
-        },
-        "fields": {
-            "config": {
-                "label": "REST API",
-                "required": true,
-                "viewClass": "RestAPIView",
-            }
+      },
+      "fields": {
+          "config": {
+            "label": "REST API",
+            "required": true,
+            "viewClass": "RestAPIView"
         }
+      }
     }
   }
 }
