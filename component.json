@@ -88,7 +88,7 @@
         "out": "./lib/schemas/httpRequest.out.json"
       },
       "fields": {
-          "config": {
+          "reader": {
             "label": "REST API",
             "required": true,
             "viewClass": "RESTAPIView"
