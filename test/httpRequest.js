@@ -1,3 +1,4 @@
+const jsonata    = require('jsonata');
 const { stub }   = require('sinon');
 const { expect } = require('chai');
 const nock       = require('nock');
@@ -20,16 +21,20 @@ describe('httpRequest action', () => {
             it(`should properly execute ${method} request`, done => {
                 const msg = {
                     body: {
-                        method,
                         url: 'http://example.com'
                     }
                 };
 
-                const cfg = {};
+                const cfg = {
+                    config: {
+                        url: 'url',
+                        method
+                    }
+                };
 
                 const responseMessage = `hello world ${index}`;
 
-                nock(msg.body.url)
+                nock(jsonata(cfg.config.url).evaluate(msg.body))
                     .intercept('/', method)
                     .delay(20 + Math.random() * 200)
                     .reply(function(uri, requestBody) {
@@ -57,43 +62,116 @@ describe('httpRequest action', () => {
             it(`should make request with http ${authType} auth`, done => {
                 const msg = {
                     body: {
-                        method: 'GET',
-                        url: 'http://example.com',
-                        auth: {}
+                        url: 'http://example.com'
                     }
                 };
 
-                msg.body.auth[authType] = {
-                    username: 'John',
-                    password: 'Doe'
+                const cfg = {
+                    config: {
+                        url: 'url',
+                        method: 'GET',
+                        auth: {
+                            [authType]: {
+                                username: 'John',
+                                password: 'Doe'
+                            }
+                        }
+                    }
                 };
-
-                const cfg = {};
 
                 const responseMessage = `hello world ${i}`;
 
                 if (authType === 'basic') {
-                    nock(msg.body.url)
-                        .intercept('/', msg.body.method)
+                    nock(jsonata(cfg.config.url).evaluate(msg.body))
+                        .intercept('/', cfg.config.method)
                         .basicAuth({
-                            user: msg.body.auth.basic.username,
-                            pass: msg.body.auth.basic.password
+                            user: cfg.config.auth.basic.username,
+                            pass: cfg.config.auth.basic.password
                         })
                         .delay(20 + Math.random() * 200)
                         .reply(() => {
                             done();
                         });
                 } else {
-                    nock(msg.body.url)
+                    // TODO make the working test of digest auth
+                    nock(jsonata(cfg.config.url).evaluate(msg.body)/*, {
+                            reqheaders: {
+                                'authorization': 'Digest Auth'
+                            }
+                        }*/)
                         .get('/')
                         .delay(20 + Math.random() * 200)
                         .reply(function(uri, requestBody) {
-                            console.log('this.req', this.req);
                             done();
                         });
                 }
 
                 processAction(msg, cfg).catch(done.fail);
+            });
+        });
+    });
+
+    describe('when some args are wrong', () => {
+        it('should throw error if cfg.config.method is absent', done => {
+            const msg = {
+                body: {
+                    url: 'example.com'
+                }
+            };
+
+            const cfg = {
+                config: {
+                    url: 'url'
+                }
+            };
+
+            processAction(msg, cfg).catch(err => {
+                expect(err.message).equal('Method is required');
+
+                done();
+            });
+        });
+
+        it('should throw error if cfg.config.url is absent', done => {
+            const msg = {
+                body: {
+                    url: 'example.com'
+                }
+            };
+
+            const cfg = {
+                config: {
+                    method: 'GET'
+                }
+            };
+
+            processAction(msg, cfg).catch(err => {
+                expect(err.message).equal('URL is required');
+
+                done();
+            });
+        });
+
+        it('should throw error if cfg.config.method is wrong', done => {
+            const msg = {
+                body: {
+                    url: 'example.com'
+                }
+            };
+
+            const cfg = {
+                config: {
+                    url: 'url',
+                    method: 'GETT'
+                }
+            };
+
+            processAction(msg, cfg).catch(err => {
+                expect(err.message).equal(
+                    `Method "${cfg.config.method}" isn't one of the: DELETE,GET,PATCH,POST,PUT.`
+                );
+
+                done();
             });
         });
     });
