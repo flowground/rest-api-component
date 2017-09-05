@@ -1,0 +1,28 @@
+{
+    "name": "@elasticio/petstore-component-nodejs",
+    "version": "0.0.1",
+    "description": "elastic.io component for the Petstore API",
+    "scripts": {
+        "test": "NODE_ENV=test mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:elasticio/petstore-component-nodejs.git"
+    },
+    "author": "elastic.io GmbH",
+    "license": "BSD-2-Clause",
+    "engines": {
+        "node": "8"
+    },
+    "dependencies": {
+        "chai": "^4.1.2",
+        "co": "4.6.0",
+        "elasticio-node": "0.0.7",
+        "elasticio-sailor-nodejs": "2.1.0",
+        "mocha": "^3.5.0",
+        "nock": "^9.0.14",
+        "request": "2.76.0",
+        "request-promise": "^4.1.1",
+        "sinon": "^3.2.1"
+    }
+}
