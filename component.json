@@ -84,8 +84,7 @@
       "main": "./lib/actions/httpRequest.js",
       "title": "HTTP request",
       "metadata": {
-        "in": "./lib/schemas/httpRequest.in.json",
-        "out": "./lib/schemas/httpRequest.out.json"
+        "out": {}
       },
       "fields": {
           "reader": {
