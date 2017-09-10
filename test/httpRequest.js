@@ -26,7 +26,7 @@ describe('httpRequest action', () => {
                 };
 
                 const cfg = {
-                    config: {
+                    reader: {
                         url: 'url',
                         method
                     }
@@ -34,7 +34,7 @@ describe('httpRequest action', () => {
 
                 const responseMessage = `hello world ${index}`;
 
-                nock(jsonata(cfg.config.url).evaluate(msg.body))
+                nock(jsonata(cfg.reader.url).evaluate(msg.body))
                     .intercept('/', method)
                     .delay(20 + Math.random() * 200)
                     .reply(function(uri, requestBody) {
@@ -67,7 +67,7 @@ describe('httpRequest action', () => {
                 };
 
                 const cfg = {
-                    config: {
+                    reader: {
                         url: 'url',
                         method: 'GET',
                         auth: {
@@ -82,11 +82,11 @@ describe('httpRequest action', () => {
                 const responseMessage = `hello world ${i}`;
 
                 if (authType === 'basic') {
-                    nock(jsonata(cfg.config.url).evaluate(msg.body))
-                        .intercept('/', cfg.config.method)
+                    nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                        .intercept('/', cfg.reader.method)
                         .basicAuth({
-                            user: cfg.config.auth.basic.username,
-                            pass: cfg.config.auth.basic.password
+                            user: cfg.reader.auth.basic.username,
+                            pass: cfg.reader.auth.basic.password
                         })
                         .delay(20 + Math.random() * 200)
                         .reply(() => {
@@ -94,7 +94,7 @@ describe('httpRequest action', () => {
                         });
                 } else {
                     // TODO make the working test of digest auth
-                    nock(jsonata(cfg.config.url).evaluate(msg.body)/*, {
+                    nock(jsonata(cfg.reader.url).evaluate(msg.body)/*, {
                             reqheaders: {
                                 'authorization': 'Digest Auth'
                             }
@@ -112,7 +112,7 @@ describe('httpRequest action', () => {
     });
 
     describe('when some args are wrong', () => {
-        it('should throw error if cfg.config.method is absent', done => {
+        it('should throw error if cfg.reader.method is absent', done => {
             const msg = {
                 body: {
                     url: 'example.com'
@@ -120,19 +120,21 @@ describe('httpRequest action', () => {
             };
 
             const cfg = {
-                config: {
+                reader: {
                     url: 'url'
                 }
             };
 
-            processAction(msg, cfg).catch(err => {
+            try {
+                processAction(msg, cfg);
+            } catch (err) {
                 expect(err.message).equal('Method is required');
 
                 done();
-            });
+            }
         });
 
-        it('should throw error if cfg.config.url is absent', done => {
+        it('should throw error if cfg.reader.url is absent', done => {
             const msg = {
                 body: {
                     url: 'example.com'
@@ -140,19 +142,21 @@ describe('httpRequest action', () => {
             };
 
             const cfg = {
-                config: {
+                reader: {
                     method: 'GET'
                 }
             };
 
-            processAction(msg, cfg).catch(err => {
+            try {
+                processAction(msg, cfg);
+            } catch (err) {
                 expect(err.message).equal('URL is required');
 
                 done();
-            });
+            }
         });
 
-        it('should throw error if cfg.config.method is wrong', done => {
+        it('should throw error if cfg.reader.method is wrong', done => {
             const msg = {
                 body: {
                     url: 'example.com'
@@ -160,19 +164,21 @@ describe('httpRequest action', () => {
             };
 
             const cfg = {
-                config: {
+                reader: {
                     url: 'url',
                     method: 'GETT'
                 }
             };
 
-            processAction(msg, cfg).catch(err => {
+            try {
+                processAction(msg, cfg);
+            } catch (err) {
                 expect(err.message).equal(
-                    `Method "${cfg.config.method}" isn't one of the: DELETE,GET,PATCH,POST,PUT.`
+                    `Method "${cfg.reader.method}" isn't one of the: DELETE,GET,PATCH,POST,PUT.`
                 );
 
                 done();
-            });
+            }
         });
     });
 });
