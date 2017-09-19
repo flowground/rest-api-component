@@ -49,9 +49,7 @@ describe('httpRequest action', () => {
 
                 processAction(msg, cfg).then(() => {
                     expect(messagesNewMessageWithBodyStub.getCall(index).args[0])
-                        .to.deep.equal({
-                            response: responseMessage
-                        });
+                        .to.deep.equal(responseMessage);
 
                     done();
                 }).catch(done.fail);
@@ -105,6 +103,189 @@ describe('httpRequest action', () => {
                             done();
                         });
                 }
+
+                processAction(msg, cfg).catch(done.fail);
+            });
+        });
+
+        it('should pass 1 header properly', done => {
+            const msg = {
+                body: {
+                    url: 'http://example.com'
+                }
+            };
+
+            const cfg = {
+                reader: {
+                    url: 'url',
+                    method: 'GET',
+                    headers: [
+                        {
+                            key: 'Content-Type',
+                            value: 'text/html; charset=UTF-8'
+                        }
+                    ]
+                }
+            };
+
+            const responseMessage = `hello world`;
+
+            nock(jsonata(cfg.reader.url).evaluate(msg.body), {
+                    reqheaders: {
+                        'Content-Type': 'text/html; charset=UTF-8'
+                    }
+                })
+                .intercept('/', 'GET')
+                .delay(20 + Math.random() * 200)
+                .reply(function(uri, requestBody) {
+                    done();
+                    return [
+                        200,
+                        responseMessage
+                    ];
+                });
+
+            processAction(msg, cfg).catch(done.fail);
+        });
+
+        it('should pass multiple headers properly', done => {
+            const msg = {
+                body: {
+                    url: 'http://example.com'
+                }
+            };
+
+            const cfg = {
+                reader: {
+                    url: 'url',
+                    method: 'GET',
+                    headers: [
+                        {
+                            key: 'Accept',
+                            value: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                        },
+                        {
+                            key: 'Keep-Alive',
+                            value: '300'
+                        },
+                        {
+                            key: 'Connection',
+                            value: 'keep-alive'
+                        }
+                    ]
+                }
+            };
+
+            const responseMessage = `hello world`;
+
+            nock(jsonata(cfg.reader.url).evaluate(msg.body), {
+                    reqheaders: {
+                        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+                        'Connection': 'keep-alive',
+                        'Keep-Alive': '300',
+                    }
+                })
+                .intercept('/', 'GET')
+                .delay(20 + Math.random() * 200)
+                .reply(function(uri, requestBody) {
+                    done();
+                    return [
+                        200,
+                        responseMessage
+                    ];
+                });
+
+            processAction(msg, cfg).catch(done.fail);
+        });
+
+        describe('when request body is passed', () => {
+            it('should properly pass raw body', done => {
+                const msg = {
+                    body: {
+                        url: 'http://example.com'
+                    }
+                };
+
+                const rawString = 'Lorem ipsum dolor sit amet, consectetur'
+                    + ' adipiscing elit. Quisque accumsan dui id dolor '
+                    + 'cursus, nec pharetra metus tincidunt';
+
+                const cfg = {
+                    reader: {
+                        url: 'url',
+                        method: 'POST',
+                        body: {
+                            raw: rawString
+                        }
+                    }
+                };
+
+                const responseMessage = `hello world`;
+
+                nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                    .post('/', /Lorem\sipsum/gi)
+                    .delay(20 + Math.random() * 200)
+                    .reply(function(uri, requestBody) {
+                        done();
+                        return [
+                            200,
+                            responseMessage
+                        ];
+                    });
+
+                processAction(msg, cfg).catch(done.fail);
+            });
+
+            it('should properly pass formdata body', done => {
+                const msg = {
+                    body: {
+                        url: 'http://example.com'
+                    }
+                };
+
+                const rawString = 'Lorem ipsum dolor sit amet, consectetur'
+                    + ' adipiscing elit. Quisque accumsan dui id dolor '
+                    + 'cursus, nec pharetra metus tincidunt';
+
+                const cfg = {
+                    reader: {
+                        url: 'url',
+                        method: 'POST',
+                        body: {
+                            formData: [
+                                {
+                                    key: 'foo',
+                                    value: 'bar'
+                                },
+                                {
+                                    key: 'baz',
+                                    value: 'qwe'
+                                },
+                                {
+                                    key: 'hello',
+                                    value: 'world'
+                                }
+                            ]
+                        }
+                    }
+                };
+
+                const responseMessage = `hello world`;
+
+                nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                    .post('/', {
+                        foo: 'bar',
+                        baz: 'qwe',
+                        hello: 'world',
+                    })
+                    .delay(20 + Math.random() * 200)
+                    .reply(function(uri, requestBody) {
+                        done();
+                        return [
+                            200,
+                            responseMessage
+                        ];
+                    });
 
                 processAction(msg, cfg).catch(done.fail);
             });
