@@ -38,9 +38,6 @@ describe('httpRequest action', () => {
                     .intercept('/', method)
                     .delay(20 + Math.random() * 200)
                     .reply(function(uri, requestBody) {
-                        // console.log('path:', this.req.path);
-                        // console.log('headers:', this.req.headers);
-
                         return [
                             200,
                             responseMessage
@@ -118,11 +115,11 @@ describe('httpRequest action', () => {
             const cfg = {
                 reader: {
                     url: 'url',
-                    method: 'GET',
+                    method: 'POST',
                     headers: [
                         {
                             key: 'Content-Type',
-                            value: 'text/html; charset=UTF-8'
+                            value: '"text/html; charset=UTF-8"'
                         }
                     ]
                 }
@@ -135,7 +132,7 @@ describe('httpRequest action', () => {
                         'Content-Type': 'text/html; charset=UTF-8'
                     }
                 })
-                .intercept('/', 'GET')
+                .intercept('/', 'POST')
                 .delay(20 + Math.random() * 200)
                 .reply(function(uri, requestBody) {
                     done();
@@ -158,19 +155,19 @@ describe('httpRequest action', () => {
             const cfg = {
                 reader: {
                     url: 'url',
-                    method: 'GET',
+                    method: 'POST',
                     headers: [
                         {
                             key: 'Accept',
-                            value: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8'
+                            value: '"text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"'
                         },
                         {
                             key: 'Keep-Alive',
-                            value: '300'
+                            value: '"300"'
                         },
                         {
                             key: 'Connection',
-                            value: 'keep-alive'
+                            value: '"keep-alive"'
                         }
                     ]
                 }
@@ -185,7 +182,7 @@ describe('httpRequest action', () => {
                         'Keep-Alive': '300',
                     }
                 })
-                .intercept('/', 'GET')
+                .intercept('/', 'POST')
                 .delay(20 + Math.random() * 200)
                 .reply(function(uri, requestBody) {
                     done();
@@ -206,16 +203,17 @@ describe('httpRequest action', () => {
                     }
                 };
 
-                const rawString = 'Lorem ipsum dolor sit amet, consectetur'
+                const rawString = '"Lorem ipsum dolor sit amet, consectetur'
                     + ' adipiscing elit. Quisque accumsan dui id dolor '
-                    + 'cursus, nec pharetra metus tincidunt';
+                    + 'cursus, nec pharetra metus tincidunt"';
 
                 const cfg = {
                     reader: {
                         url: 'url',
                         method: 'POST',
                         body: {
-                            raw: rawString
+                            raw: rawString,
+                            encoding: 'raw'
                         }
                     }
                 };
@@ -239,13 +237,10 @@ describe('httpRequest action', () => {
             it('should properly pass formdata body', done => {
                 const msg = {
                     body: {
-                        url: 'http://example.com'
+                        url: 'http://example.com',
+                        world: 'world'
                     }
                 };
-
-                const rawString = 'Lorem ipsum dolor sit amet, consectetur'
-                    + ' adipiscing elit. Quisque accumsan dui id dolor '
-                    + 'cursus, nec pharetra metus tincidunt';
 
                 const cfg = {
                     reader: {
@@ -255,17 +250,18 @@ describe('httpRequest action', () => {
                             formData: [
                                 {
                                     key: 'foo',
-                                    value: 'bar'
+                                    value: '"bar"'
                                 },
                                 {
                                     key: 'baz',
-                                    value: 'qwe'
+                                    value: '"qwe"'
                                 },
                                 {
                                     key: 'hello',
-                                    value: 'world'
+                                    value: '"world"'
                                 }
-                            ]
+                            ],
+                            encoding: 'form-data'
                         }
                     }
                 };
