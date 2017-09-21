@@ -1,0 +1,21 @@
+{
+  "title": "REST API",
+  "description": "elastic.io component for the REST API",
+  "docsUrl": "https://github.com/elasticio/rest-api-component",
+  "actions": {
+    "httpRequest": {
+      "main": "./lib/actions/httpRequest.js",
+      "title": "HTTP request",
+      "metadata": {
+        "out": {}
+      },
+      "fields": {
+          "reader": {
+            "label": "REST API",
+            "required": true,
+            "viewClass": "RESTAPIView"
+        }
+      }
+    }
+  }
+}
