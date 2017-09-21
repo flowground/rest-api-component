@@ -18,7 +18,7 @@ describe('httpRequest action', () => {
         });
 
         ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method, index) => {
-            it(`should properly execute ${method} request`, done => {
+            it(`should properly execute ${method} request`, async () => {
                 const msg = {
                     body: {
                         url: 'http://example.com'
@@ -44,12 +44,10 @@ describe('httpRequest action', () => {
                         ];
                     });
 
-                processAction(msg, cfg).then(() => {
-                    expect(messagesNewMessageWithBodyStub.getCall(index).args[0])
-                        .to.deep.equal(responseMessage);
+                await processAction(msg, cfg);
 
-                    done();
-                }).catch(done.fail);
+                expect(messagesNewMessageWithBodyStub.getCall(index).args[0])
+                    .to.deep.equal(responseMessage);
             });
         });
 
@@ -89,11 +87,7 @@ describe('httpRequest action', () => {
                         });
                 } else {
                     // TODO make the working test of digest auth
-                    nock(jsonata(cfg.reader.url).evaluate(msg.body)/*, {
-                            reqheaders: {
-                                'authorization': 'Digest Auth'
-                            }
-                        }*/)
+                    nock(jsonata(cfg.reader.url).evaluate(msg.body))
                         .get('/')
                         .delay(20 + Math.random() * 200)
                         .reply(function(uri, requestBody) {
@@ -101,7 +95,7 @@ describe('httpRequest action', () => {
                         });
                 }
 
-                processAction(msg, cfg).catch(done.fail);
+                processAction(msg, cfg);
             });
         });
 
@@ -142,7 +136,7 @@ describe('httpRequest action', () => {
                     ];
                 });
 
-            processAction(msg, cfg).catch(done.fail);
+            processAction(msg, cfg);
         });
 
         it('should pass multiple headers properly', done => {
@@ -192,7 +186,7 @@ describe('httpRequest action', () => {
                     ];
                 });
 
-            processAction(msg, cfg).catch(done.fail);
+            processAction(msg, cfg);
         });
 
         describe('when request body is passed', () => {
@@ -231,7 +225,7 @@ describe('httpRequest action', () => {
                         ];
                     });
 
-                processAction(msg, cfg).catch(done.fail);
+                processAction(msg, cfg);
             });
 
             it('should properly pass formdata body', done => {
@@ -283,7 +277,7 @@ describe('httpRequest action', () => {
                         ];
                     });
 
-                processAction(msg, cfg).catch(done.fail);
+                processAction(msg, cfg);
             });
         });
     });
