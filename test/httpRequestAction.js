@@ -3,10 +3,9 @@ const { stub }   = require('sinon');
 const { expect } = require('chai');
 const nock       = require('nock');
 
-const request = require('request-promise');
 const messages = require('elasticio-node').messages;
 
-const processAction = require('../lib/actions/httpRequest').process;
+const processAction = require('../lib/actions/httpRequestAction').process;
 
 describe('httpRequest action', () => {
     describe('when all params is correct', () => {
@@ -32,7 +31,7 @@ describe('httpRequest action', () => {
                     }
                 };
 
-                const responseMessage = `hello world ${index}`;
+                const responseMessage = {message: `hello world ${index}`};
 
                 nock(jsonata(cfg.reader.url).evaluate(msg.body))
                     .intercept('/', method)
@@ -48,54 +47,6 @@ describe('httpRequest action', () => {
 
                 expect(messagesNewMessageWithBodyStub.getCall(index).args[0])
                     .to.deep.equal(responseMessage);
-            });
-        });
-
-        ['basic', 'digest'].forEach((authType, i) => {
-            it(`should make request with http ${authType} auth`, done => {
-                const msg = {
-                    body: {
-                        url: 'http://example.com'
-                    }
-                };
-
-                const cfg = {
-                    reader: {
-                        url: 'url',
-                        method: 'GET',
-                        auth: {
-                            [authType]: {
-                                username: 'John',
-                                password: 'Doe'
-                            }
-                        }
-                    }
-                };
-
-                const responseMessage = `hello world ${i}`;
-
-                if (authType === 'basic') {
-                    nock(jsonata(cfg.reader.url).evaluate(msg.body))
-                        .intercept('/', cfg.reader.method)
-                        .basicAuth({
-                            user: cfg.reader.auth.basic.username,
-                            pass: cfg.reader.auth.basic.password
-                        })
-                        .delay(20 + Math.random() * 200)
-                        .reply(() => {
-                            done();
-                        });
-                } else {
-                    // TODO make the working test of digest auth
-                    nock(jsonata(cfg.reader.url).evaluate(msg.body))
-                        .get('/')
-                        .delay(20 + Math.random() * 200)
-                        .reply(function(uri, requestBody) {
-                            done();
-                        });
-                }
-
-                processAction(msg, cfg);
             });
         });
 
@@ -255,18 +206,17 @@ describe('httpRequest action', () => {
                                     value: '"world"'
                                 }
                             ],
-                            encoding: 'form-data'
-                        }
+                            contentType: 'multipart/form-data'
+                        },
+                        headers: []
                     }
                 };
 
                 const responseMessage = `hello world`;
 
                 nock(jsonata(cfg.reader.url).evaluate(msg.body))
-                    .post('/', {
-                        foo: 'bar',
-                        baz: 'qwe',
-                        hello: 'world',
+                    .post('/', function(body) {
+                        return body.replace(/[\n\r]/g, '').match(/foo.+bar.+baz.+qwe.+hello.+world/);
                     })
                     .delay(20 + Math.random() * 200)
                     .reply(function(uri, requestBody) {
