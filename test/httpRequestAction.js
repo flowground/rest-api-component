@@ -28,7 +28,8 @@ describe('httpRequest action', () => {
                     reader: {
                         url: 'url',
                         method
-                    }
+                    },
+                    auth: {}
                 };
 
                 const responseMessage = {message: `hello world ${index}`};
@@ -67,7 +68,8 @@ describe('httpRequest action', () => {
                             value: '"text/html; charset=UTF-8"'
                         }
                     ]
-                }
+                },
+                auth: {}
             };
 
             const responseMessage = `hello world`;
@@ -115,7 +117,8 @@ describe('httpRequest action', () => {
                             value: '"keep-alive"'
                         }
                     ]
-                }
+                },
+                auth: {}
             };
 
             const responseMessage = `hello world`;
@@ -160,7 +163,8 @@ describe('httpRequest action', () => {
                             raw: rawString,
                             encoding: 'raw'
                         }
-                    }
+                    },
+                    auth: {}
                 };
 
                 const responseMessage = `hello world`;
@@ -209,7 +213,8 @@ describe('httpRequest action', () => {
                             contentType: 'multipart/form-data'
                         },
                         headers: []
-                    }
+                    },
+                    auth: {}
                 };
 
                 const responseMessage = `hello world`;
@@ -243,7 +248,8 @@ describe('httpRequest action', () => {
             const cfg = {
                 reader: {
                     url: 'url'
-                }
+                },
+                auth: {}
             };
 
             try {
@@ -265,7 +271,8 @@ describe('httpRequest action', () => {
             const cfg = {
                 reader: {
                     method: 'GET'
-                }
+                },
+                auth: {}
             };
 
             try {
@@ -288,7 +295,8 @@ describe('httpRequest action', () => {
                 reader: {
                     url: 'url',
                     method: 'GETT'
-                }
+                },
+                auth: {}
             };
 
             try {
