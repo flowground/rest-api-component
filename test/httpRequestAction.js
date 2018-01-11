@@ -8,14 +8,14 @@ const messages = require('elasticio-node').messages;
 const processAction = require('../lib/actions/httpRequestAction').process;
 
 describe('httpRequest action', () => {
+    let messagesNewMessageWithBodyStub;
+
+    before(() => {
+        messagesNewMessageWithBodyStub =
+            stub(messages, 'newMessageWithBody').returns(Promise.resolve());
+    });
+
     describe('when all params is correct', () => {
-        let messagesNewMessageWithBodyStub;
-
-        before(() => {
-            messagesNewMessageWithBodyStub =
-                stub(messages, 'newMessageWithBody').returns(Promise.resolve());
-        });
-
         ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method, index) => {
             it(`should properly execute ${method} request`, async () => {
                 const msg = {
@@ -309,5 +309,41 @@ describe('httpRequest action', () => {
                 done();
             }
         });
+    });
+
+    describe('Non-JSON responses', () => {
+        it('No response body', async () => {
+           const method = 'POST';
+           const msg = {
+               body: {
+                   url: 'http://example.com'
+               }
+           };
+
+           const cfg = {
+               reader: {
+                   url: 'url',
+                   method
+               },
+               auth: {}
+           };
+
+           const responseMessage = '';
+
+           nock(jsonata(cfg.reader.url).evaluate(msg.body))
+               .intercept('/', method)
+               .delay(20 + Math.random() * 200)
+               .reply(function (uri, requestBody) {
+                   return [
+                       204,
+                       responseMessage
+                   ];
+               });
+
+           await processAction(msg, cfg);
+
+           expect(messagesNewMessageWithBodyStub.lastCall.args[0])
+               .to.deep.equal({});
+       });
     });
 });
