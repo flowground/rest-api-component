@@ -1,44 +1,61 @@
 {
-  "title": "REST API",
-  "description": "elastic.io component for the REST API",
+  "title": "RiverSand Ack",
+  "description": "elastic.io component for sending Ack message to RiverSand",
   "docsUrl": "https://github.com/elasticio/rest-api-component",
-  "credentials": {
-    "fields": {
-      "auth": {
-        "required": false,
-        "viewClass": "HTTPAuthView"
-      }
-    }
-  },
-  "triggers": {
-    "httpRequestTrigger": {
-      "main": "./lib/triggers/httpRequestTrigger.js",
-      "title": "HTTP request",
-      "type": "polling",
-      "metadata": {
-        "out": {}
-      },
-      "fields": {
-          "reader": {
-            "label": "REST API",
-            "required": true,
-            "viewClass": "RESTAPIView"
-        }
-      }
-    }
-  },
   "actions": {
     "httpRequestAction": {
       "main": "./lib/actions/httpRequestAction.js",
-      "title": "HTTP request",
+      "title": "Ack send",
       "metadata": {
-        "out": {}
+        "in": {
+          "type": "object",
+          "properties": {
+            "messageType": {
+              "type": "string",
+              "required": true,
+              "enum": ["ack", "error"]
+            },
+            "status": {
+              "type": "string",
+              "required": true,
+              "enum": ["Submitted", "SentToEndPoint", "Completed"]
+            },
+            "message": {
+              "type": "string",
+              "required": true
+            },
+            "workautomationId": {
+              "type": "string",
+              "required": true
+            }
+          }
+        }
       },
       "fields": {
-        "reader": {
-          "label": "REST API",
+        "url": {
+          "label": "URL",
           "required": true,
-          "viewClass": "RESTAPIView"
+          "viewClass": "TextFieldView"
+        },
+        "port": {
+          "label": "Port",
+          "required": true,
+          "viewClass": "TextFieldView"
+        },
+        "tenant_id": {
+          "label": "Tenant ID",
+          "required": true,
+          "viewClass": "TextFieldView"
+        },
+        "channel": {
+          "label": "Channel that we connect to ( Amazon, Walmart or GoogleShopping etc.)",
+          "required": true,
+          "viewClass": "TextFieldView"
+        },
+        "user_id": {
+          "label": "User ID",
+          "required": true,
+          "viewClass": "TextFieldView"
         }
       }
     }
