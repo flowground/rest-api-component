@@ -1,4 +1,4 @@
-const jsonata    = require('jsonata');
+const jsonata    = require('@elastic.io/jsonata-moment');
 const { stub }   = require('sinon');
 const { expect } = require('chai');
 const nock       = require('nock');
