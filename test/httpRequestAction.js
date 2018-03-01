@@ -75,16 +75,20 @@ describe('httpRequest action', () => {
                     }
                 }
 
+                // Due to different timezones of developers and production server we can not hardcode expected evaluation result
+                const sampleHeaderValue = jsonata('$moment(1519834345000).format()').evaluate({});
+                expect(sampleHeaderValue.includes('2018-02-28')).to.equal(true);
+
                 nock('http://example.com', {
                         reqheaders: {
-                            'SampleHeader': '2018-02-28T17:12:25+01:00'
+                            SampleHeader: sampleHeaderValue
                         }
                     })
-                    .intercept('/bar?foo=2018-02-28T17:12:25+01:00', method)
+                    .intercept('/bar?foo=' + sampleHeaderValue, method)
                     .delay(20 + Math.random() * 200)
                     .reply(function(uri, requestBody) {
                         if(method !== 'GET') {
-                            expect(requestBody).to.deep.equal('2018-02-28T17:12:25+01:00');
+                            expect(sampleHeaderValue.includes('2018-02-28')).to.equal(true);
                         }
                         return [
                             200,
