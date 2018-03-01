@@ -37,7 +37,7 @@ describe('httpRequest action', () => {
                 nock(jsonata(cfg.reader.url).evaluate(msg.body))
                     .intercept('/', method)
                     .delay(20 + Math.random() * 200)
-                    .reply(function(uri, requestBody) {
+                    .reply(function (uri, requestBody) {
                         return [
                             200,
                             responseMessage
@@ -49,6 +49,51 @@ describe('httpRequest action', () => {
                 expect(messagesNewMessageWithBodyStub.getCall(index).args[0])
                     .to.deep.equal(responseMessage);
             });
+        });
+
+        ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method) => {
+            it(`jsonata correctness ${method} test`, async() => {
+                const msg = {body: {}};
+                const cfg = {
+                    reader: {
+                        url: '"http://example.com/bar?foo=" & $moment(1519834345000).format()',
+                        method: method,
+                        headers: [
+                            {
+                                key: 'SampleHeader',
+                                value: '$moment(1519834345000).format()'
+                            }
+                        ]
+                    },
+                    auth: {}
+                };
+
+                if (method !== 'GET') {
+                    cfg.reader.body =  {
+                        raw: '$moment(1519834345000).format()',
+                        encoding: 'raw'
+                    }
+                }
+
+                nock('http://example.com', {
+                        reqheaders: {
+                            'SampleHeader': '2018-02-28T17:12:25+01:00'
+                        }
+                    })
+                    .intercept('/bar?foo=2018-02-28T17:12:25+01:00', method)
+                    .delay(20 + Math.random() * 200)
+                    .reply(function(uri, requestBody) {
+                        if(method !== 'GET') {
+                            expect(requestBody).to.deep.equal('2018-02-28T17:12:25+01:00');
+                        }
+                        return [
+                            200,
+                            "{}"
+                        ];
+                    });
+
+                await processAction(msg, cfg);
+            })
         });
 
         it('should pass 1 header properly', done => {
