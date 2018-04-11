@@ -10,6 +10,7 @@ This document covers the following topics:
 *   [Authorisation methods](#authorisation-methods)
 *   [Defining HTTP headers](#defining-http-headers)
 *   [Defining request body](#defining-http-body)
+*   [Working with XML Responses](#working-with-xml)
 *   [Known Limitations](#known-limitations)
 
 ## Introduction
@@ -124,11 +125,32 @@ Content-Disposition: form-data; name="part2"
 
 Notice how different parts get separated by the boundary. This form is capable of supporting attachments as well.
 
+### Working with XML
+
+This component will try to parse XML content types in the HTTP Response assuming the `Content-Type` header has a
+**MIME Content Type** with `xml` in it (e.g. `application/xml`). 
+In this case response body will be parsed to JSON using `xml2js` node library and following settings:
+
+```js
+{
+    trim: false,
+    normalize: false,
+    explicitArray: false,
+    normalizeTags: false,
+    attrkey: '_attr',
+    tagNameProcessors: [
+        (name) => name.replace(':', '-')
+    ]
+}
+```
+
+for more information please see the 
+[Documenattion of XML2JS library](https://github.com/Leonidas-from-XIV/node-xml2js#options)
+
 ## Known Limitations
 
 **If the response content-type is anything else than `application/json` then the component will through an error and stop the execution**. In particular the REST API component still:
 
-*   Can't handle XML Responses
 *   Can't handle multi-part responses
 *   Can't handle HTML/Plain-text responses
 
