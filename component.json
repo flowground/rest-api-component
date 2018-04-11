@@ -1,6 +1,6 @@
 {
   "title": "REST API",
-  "description": "elastic.io component for the REST API",
+  "description": "A generic connector for accessing HTTP and REST APIs",
   "docsUrl": "https://github.com/elasticio/rest-api-component",
   "credentials": {
     "fields": {
@@ -14,6 +14,7 @@
     "httpRequestTrigger": {
       "main": "./lib/triggers/httpRequestTrigger.js",
       "title": "HTTP request",
+      "description": "Will send a GET/POST/PUT/DELETE HTTP request and parse the response back to the flow",
       "type": "polling",
       "metadata": {
         "out": {}
@@ -31,6 +32,7 @@
     "httpRequestAction": {
       "main": "./lib/actions/httpRequestAction.js",
       "title": "HTTP request",
+      "description": "Will send a GET/POST/PUT/DELETE HTTP request and parse the response back to the flow",
       "metadata": {
         "out": {}
       },
