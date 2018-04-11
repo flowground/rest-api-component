@@ -382,17 +382,110 @@ describe('httpRequest action', () => {
            nock(jsonata(cfg.reader.url).evaluate(msg.body))
                .intercept('/', method)
                .delay(20 + Math.random() * 200)
-               .reply(function (uri, requestBody) {
-                   return [
-                       204,
-                       responseMessage
-                   ];
-               });
+               .reply(204, responseMessage);
 
            await processAction(msg, cfg);
 
            expect(messagesNewMessageWithBodyStub.lastCall.args[0])
                .to.deep.equal({});
        });
+
+        it('Valid XML Response', async () => {
+            const method = 'POST';
+            const msg = {
+                body: {
+                    url: 'http://example.com'
+                }
+            };
+
+            const cfg = {
+                reader: {
+                    url: 'url',
+                    method
+                },
+                auth: {}
+            };
+
+            nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                .intercept('/', method)
+                .delay(20 + Math.random() * 200)
+                .reply(200, '<xml>foo</xml>', {
+                    'Content-Type': 'application/xml'
+                });
+
+            await processAction(msg, cfg);
+
+            expect(messagesNewMessageWithBodyStub.lastCall.args[0])
+                .to.deep.equal({xml: 'foo'});
+        });
+
+        it('Invalid XML Response', async () => {
+            const method = 'POST';
+            const msg = {
+                body: {
+                    url: 'http://example.com'
+                }
+            };
+
+            const cfg = {
+                reader: {
+                    url: 'url',
+                    method
+                },
+                auth: {}
+            };
+
+            nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                .intercept('/', method)
+                .delay(20 + Math.random() * 200)
+                .reply(200, '<xml>foo</xmlasdf>', {
+                    'Content-Type': 'application/xml'
+                });
+
+            try {
+                await processAction(msg, cfg);
+                throw new Error("This line should never be called because await above should throw an error");
+            } catch (err) {
+                // all good
+            }
+        });
+    });
+
+    describe('Some text response without any content type', () => {
+        it('No response body', async () => {
+            const method = 'POST';
+            const msg = {
+                body: {
+                    url: 'http://example.com'
+                }
+            };
+
+            const cfg = {
+                reader: {
+                    url: 'url',
+                    method
+                },
+                auth: {}
+            };
+
+            const responseMessage = 'boom!';
+
+            nock(jsonata(cfg.reader.url).evaluate(msg.body))
+                .intercept('/', method)
+                .delay(20 + Math.random() * 200)
+                .reply(function (uri, requestBody) {
+                    return [
+                        200,
+                        responseMessage
+                    ];
+                });
+
+            try {
+                await processAction(msg, cfg);
+                throw new Error("This line should never be called because await above should throw an error");
+            } catch (err) {
+                // all good
+            }
+        });
     });
 });
