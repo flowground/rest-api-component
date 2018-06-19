@@ -20,10 +20,10 @@
         "out": {}
       },
       "fields": {
-          "reader": {
-            "label": "REST API",
-            "required": true,
-            "viewClass": "RESTAPIView"
+        "reader": {
+          "label": "REST API",
+          "required": true,
+          "viewClass": "RESTAPIView"
         }
       }
     }
@@ -37,6 +37,15 @@
         "out": {}
       },
       "fields": {
+        "followRedirect": {
+          "label": "Follow redirect mode",
+          "viewClass": "SelectView",
+          "model": {
+            "followRedirects": "Follow redirects",
+            "doNotFollowRedirects": "Do not follow redirects"
+          },
+          "prompt": "Follow redirects (default)"
+        },
         "reader": {
           "label": "REST API",
           "required": true,
