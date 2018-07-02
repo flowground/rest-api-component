@@ -147,19 +147,41 @@ In this case response body will be parsed to JSON using `xml2js` node library an
 for more information please see the 
 [Documenattion of XML2JS library](https://github.com/Leonidas-from-XIV/node-xml2js#options)
 
+##HTTP Headers 
+
+You can to get HTTP response header only if ``Don`t throw Error on Failed Calls`` option is checked.
+In this case output structure of component will be: 
+```js
+    {
+      headers:<HTTP headers>,
+      body:<HTTP response body>,
+      statusCode:<HTTP response status code>
+      statusMessage:<HTTP response status message>
+    }
+```
+##Redirection
+If you want disable Follow Redirect functionality, you can use option ``Follow redirect mode``.
+
+By default ``Follow redirect mode`` option has value ``Follow redirects`` 
+
 ## Known Limitations
 
-**If the response content-type is anything else than `application/json` then the component will through an error and stop the execution**. In particular the REST API component still:
+The component can parse any of json and xml content types. 
+There are:
+* application/json
+* application/xml
+* text/xml
+* etc.
 
-*   Can't handle multi-part responses
-*   Can't handle HTML/Plain-text responses
+`If content type is not  exists  in response header, component will try parse response as json. 
+If it get parse exception, it return response as is.`
+
+
 
 > Make sure not to perform your tests using the [requestb.in](https://requestb.in/) since it responds with the `content-type: text/html`.
 
 Here are some further limitation of the REST API component:
 
-*   HTTP Response code gets ignored
-*   Ignores and does not store HTTP Response headers
-*   Can't handle redirects
-*   No native `XML` support
 *   No attachment support
+*   The component can't handle multi-part responses
+

@@ -16,17 +16,22 @@
         "npm": "5.4"
     },
     "devDependencies": {
+        "chai": "^4.1.2",
+        "eslint": "^4.19.1",
+        "eslint-config-airbnb-base": "^13.0.0",
+        "eslint-plugin-import": "^2.13.0",
         "mocha": "^3.5.0",
         "nock": "^9.0.14",
-        "chai": "^4.1.2",
         "sinon": "^3.2.1"
     },
     "dependencies": {
         "@elastic.io/jsonata-moment": "1.0.14",
-        "content-type": "^1.0.4",
+        "debug": "^3.1.0",
         "elasticio-node": "0.0.7",
         "elasticio-sailor-nodejs": "2.1.0",
         "request": "2.83.0",
-        "xml2js": "^0.4.19"
+        "request-promise": "^4.2.2",
+        "xml2js": "^0.4.19",
+        "xml2js-es6-promise": "^1.1.1"
     }
 }
