@@ -147,7 +147,7 @@ In this case response body will be parsed to JSON using `xml2js` node library an
 for more information please see the 
 [Documenattion of XML2JS library](https://github.com/Leonidas-from-XIV/node-xml2js#options)
 
-##HTTP Headers 
+## HTTP Headers 
 
 You can to get HTTP response header only if ``Don`t throw Error on Failed Calls`` option is checked.
 In this case output structure of component will be: 
@@ -159,7 +159,7 @@ In this case output structure of component will be:
       statusMessage:<HTTP response status message>
     }
 ```
-##Redirection
+## Redirection
 If you want disable Follow Redirect functionality, you can use option ``Follow redirect mode``.
 
 By default ``Follow redirect mode`` option has value ``Follow redirects`` 
@@ -184,4 +184,3 @@ Here are some further limitation of the REST API component:
 
 *   No attachment support
 *   The component can't handle multi-part responses
-
