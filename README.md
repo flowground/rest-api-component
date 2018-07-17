@@ -171,7 +171,7 @@ By default ``Follow redirect mode`` option has value ``Follow redirects``
 ## Attachments
 Rest API component has opportunity of binary data sending. You just need choose ``multipart/form-data`` Content type and attachments from input message will be included to the request payload automatically.
 
-Rest-api component automatically load binary data to attachments with next conent types in response headers:
+Rest-api component automatically load binary data to attachments with next content types in response headers:
 * image/*
 * text/csv
 * application/msword
