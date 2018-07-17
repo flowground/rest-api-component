@@ -199,5 +199,4 @@ If it get parse exception, it return response as is.`
 
 Here are some further limitation of the REST API component:
 
-*   No attachment support
 *   The component can't handle multi-part responses
