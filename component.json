@@ -31,43 +31,44 @@
             "followRedirects": "Follow redirects",
             "doNotFollowRedirects": "Do not follow redirects"
           },
-          "reader": {
-            "label": "REST API",
-            "required": true,
-            "viewClass": "RESTAPIView"
-          }
+          "prompt": "Follow redirects (default)"
+        },
+        "reader": {
+          "label": "REST API",
+          "required": true,
+          "viewClass": "RESTAPIView"
         }
       }
     }
   },
-    "actions": {
-      "httpRequestAction": {
-        "main": "./lib/actions/httpRequestAction.js",
-        "title": "HTTP request",
-        "description": "Will send a GET/POST/PUT/DELETE HTTP request and parse the response back to the flow",
-        "metadata": {
-          "out": {}
+  "actions": {
+    "httpRequestAction": {
+      "main": "./lib/actions/httpRequestAction.js",
+      "title": "HTTP request",
+      "description": "Will send a GET/POST/PUT/DELETE HTTP request and parse the response back to the flow",
+      "metadata": {
+        "out": {}
+      },
+      "fields": {
+        "dontThrowErrorFlg": {
+          "label": "Don`t throw Error on Failed Calls",
+          "viewClass": "CheckBoxView"
         },
-        "fields": {
-          "dontThrowErrorFlg": {
-            "label": "Don`t throw Error on Failed Calls",
-            "viewClass": "CheckBoxView"
+        "followRedirect": {
+          "label": "Follow redirect mode",
+          "viewClass": "SelectView",
+          "model": {
+            "followRedirects": "Follow redirects",
+            "doNotFollowRedirects": "Do not follow redirects"
           },
-          "followRedirect": {
-            "label": "Follow redirect mode",
-            "viewClass": "SelectView",
-            "model": {
-              "followRedirects": "Follow redirects",
-              "doNotFollowRedirects": "Do not follow redirects"
-            },
-            "prompt": "Follow redirects (default)"
-          },
-          "reader": {
-            "label": "REST API",
-            "required": true,
-            "viewClass": "RESTAPIView"
-          }
+          "prompt": "Follow redirects (default)"
+        },
+        "reader": {
+          "label": "REST API",
+          "required": true,
+          "viewClass": "RESTAPIView"
         }
       }
     }
   }
+}

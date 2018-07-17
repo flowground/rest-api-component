@@ -3,7 +3,6 @@ const {stub} = require('sinon');
 const {expect} = require('chai');
 const nock = require('nock');
 
-
 const messages = require('elasticio-node').messages;
 
 const processAction = require('../lib/actions/httpRequestAction').process;
@@ -15,6 +14,7 @@ describe('httpRequest action', () => {
     messagesNewMessageWithBodyStub =
         stub(messages, 'newMessageWithBody').returns(Promise.resolve());
   });
+
 
   describe('when all params is correct', () => {
     ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'].forEach((method, index) => {
@@ -278,6 +278,65 @@ describe('httpRequest action', () => {
 
         processAction(msg, cfg);
       });
+    });
+  });
+
+
+  describe('connection error', () => {
+
+
+    it('connection error && dontThrowErrorFlg false', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com'
+        }
+      };
+
+      const cfg = {
+        dontThrowErrorFlg: false,
+        reader: {
+          url: 'url',
+          method
+        },
+        auth: {}
+      };
+
+      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+          .intercept('/', method)
+          .delay(20 + Math.random() * 200)
+          .replyWithError('something awful happened');
+      await processAction(msg, cfg).catch(e => {
+        expect(e.message).to.be.eql('Error: something awful happened');
+      });
+
+    });
+
+    it('connection error && dontThrowErrorFlg true', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com'
+        }
+      };
+
+      const cfg = {
+        dontThrowErrorFlg: true,
+        reader: {
+          url: 'url',
+          method
+        },
+        auth: {}
+      };
+
+      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+          .intercept('/', method)
+          .delay(20 + Math.random() * 200)
+          .replyWithError('something awful happened');
+
+      await processAction(msg, cfg);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0].errorMessage).to.eql("Error: something awful happened");
+
     });
   });
 
@@ -887,6 +946,81 @@ describe('httpRequest action', () => {
       expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.deep.equal({state: "after redirection"});
     });
   });
+  describe('attachments', () => {
+    it('action message with attachments', async () => {
+      const inputMsg = {
+        body: {
+          url: 'http://qwre.com',
+          world: 'world'
+        }, attachments: {
+          "1.csv": {
+            "content-type": "text/csv",
+            "size": "45889",
+            "url": "http://insight.dev.schoolwires.com/HelpAssets/C2Assets/C2Files/C2ImportCalEventSample.csv"
+          },
+
+          "2.csv": {
+            "content-type": "text/csv",
+            "size": "45889",
+            "url": "http://insight.dev.schoolwires.com/HelpAssets/C2Assets/C2Files/C2ImportCalEventSample.csv"
+          },
+
+          "3.csv": {
+            "content-type": "text/csv",
+            "size": "45889",
+            "url": "http://insight.dev.schoolwires.com/HelpAssets/C2Assets/C2Files/C2ImportCalEventSample.csv"
+          }
+        }
+      };
+
+      const rawString = 'Lorem ipsum dolor sit amet, consectetur'
+          + ' adipiscing elit. Quisque accumsan dui id dolor '
+          + 'cursus, nec pharetra metus tincidunt';
+
+      const cfg = {
+        reader: {
+          url: 'url',
+          method: 'POST',
+          body: {
+            formData: [
+              {
+                key: 'foo',
+                value: '"bar"'
+              },
+              {
+                key: 'baz',
+                value: '"qwe"'
+              },
+              {
+                key: 'hello',
+                value: '"world"'
+              }
+            ],
+            contentType: 'multipart/form-data'
+          },
+          headers: []
+        },
+        auth: {}
+      };
+
+      nock('http://qwre.com')
+          .post('/', function (body) {
+            expect(body).to.contain('Start Date');
+            return body.replace(/[\n\r]/g, '').match(/foo.+bar.+baz.+qwe.+hello.+world/);
+          })
+          .delay(20 + Math.random() * 200)
+          .reply(function (uri, requestBody) {
+            return [
+              200,
+              rawString
+            ];
+          });
+      await processAction(inputMsg, cfg);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql(rawString);
+
+    });
+  });
+
 
   describe('404 not found', () => {
     it('404 not found && dontThrowErrorFlg true', async () => {
@@ -908,13 +1042,11 @@ describe('httpRequest action', () => {
         auth: {}
       };
 
-      await processAction(msg, cfg);
-      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.deep.equal({
-        headers: undefined,
-        body: {},
-        statusCode: 404,
-        statusMessage: 'Not Found'
+      await processAction(msg, cfg).then(result => {
+        console.log()
       });
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0].statusCode).to.eql(404);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0].statusMessage).to.eql('Not Found');
     });
     it('404 not found && dontThrowErrorFlg false', async () => {
       const method = 'GET';
@@ -941,5 +1073,5 @@ describe('httpRequest action', () => {
       });
     });
   });
-})
-;
+
+});

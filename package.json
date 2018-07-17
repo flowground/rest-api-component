@@ -1,18 +1,18 @@
 {
-    "name": "@elasticio/petstore-component-nodejs",
-    "version": "0.0.1",
-    "description": "elastic.io component for the Petstore API",
+    "name": "@elasticio/rest-api-component",
+    "version": "1.0.0",
+    "description": "REST API component",
     "scripts": {
         "test": "NODE_ENV=test mocha"
     },
     "repository": {
         "type": "git",
-        "url": "git@github.com:elasticio/petstore-component-nodejs.git"
+        "url": "git@github.com:elasticio/rest-api-component.git"
     },
     "author": "elastic.io GmbH",
     "license": "BSD-2-Clause",
     "engines": {
-        "node": "8",
+        "node": "8.1.0",
         "npm": "5.4"
     },
     "devDependencies": {
@@ -20,18 +20,23 @@
         "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^13.0.0",
         "eslint-plugin-import": "^2.13.0",
-        "mocha": "^3.5.0",
+        "mocha": "^3.5.3",
         "nock": "^9.0.14",
         "sinon": "^3.2.1"
     },
     "dependencies": {
         "@elastic.io/jsonata-moment": "1.0.14",
         "debug": "^3.1.0",
+        "duplex": "^1.0.0",
         "elasticio-node": "0.0.7",
+        "elasticio-rest-node": "1.2.0",
         "elasticio-sailor-nodejs": "2.1.0",
-        "request": "2.83.0",
+        "request": "^2.83.0",
         "request-promise": "^4.2.2",
+        "uuid": "^3.3.2",
+        "v": "^0.3.0",
         "xml2js": "^0.4.19",
-        "xml2js-es6-promise": "^1.1.1"
+        "xml2js-es6-promise": "^1.1.1",
+        "yarn": "^1.7.0"
     }
 }
