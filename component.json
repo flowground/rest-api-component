@@ -37,6 +37,15 @@
           "label": "REST API",
           "required": true,
           "viewClass": "RESTAPIView"
+        },
+        "xmlToAttach": {
+          "label": "Put XML to attachment",
+          "required": false,
+          "viewClass": "SelectView",
+          "model": {
+            "true": "Yes",
+            "false": "No"
+          }
         }
       }
     }
@@ -67,6 +76,15 @@
           "label": "REST API",
           "required": true,
           "viewClass": "RESTAPIView"
+        },
+        "xmlToAttach": {
+          "label": "Put XML to attachment",
+          "required": false,
+          "viewClass": "SelectView",
+          "model": {
+            "true": "Yes",
+            "false": "No"
+          }
         }
       }
     }
