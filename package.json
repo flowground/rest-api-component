@@ -33,6 +33,8 @@
         "elasticio-sailor-nodejs": "2.1.0",
         "request": "^2.83.0",
         "request-promise": "^4.2.2",
+        "remove-trailing-slash": "^0.1.0",
+        "remove-leading-slash": "^1.0.1",
         "stream-length": "^1.0.2",
         "uuid": "^3.3.2",
         "v": "^0.3.0",
