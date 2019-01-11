@@ -28,3 +28,6 @@ node_modules
 
 # Webstorm files
 .idea
+
+# Integration tests credentials
+.env
