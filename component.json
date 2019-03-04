@@ -24,6 +24,10 @@
           "label": "Don`t throw Error on Failed Calls",
           "viewClass": "CheckBoxView"
         },
+        "enableDebugLogging": {
+          "label": "Enable debug logging",
+          "viewClass": "CheckBoxView"
+        },
         "followRedirect": {
           "label": "Follow redirect mode",
           "viewClass": "SelectView",
@@ -61,6 +65,10 @@
       "fields": {
         "dontThrowErrorFlg": {
           "label": "Don`t throw Error on Failed Calls",
+          "viewClass": "CheckBoxView"
+        },
+        "enableDebugLogging": {
+          "label": "Enable debug logging",
           "viewClass": "CheckBoxView"
         },
         "followRedirect": {

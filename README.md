@@ -7,6 +7,7 @@ The REST API component will perform a single REST API call when executed. Incomi
 This document covers the following topics:
 
 *   [Introduction](#introduction)
+*   [Enable debug logging](#enable-debug-logging)
 *   [Authorisation methods](#authorisation-methods)
 *   [Defining HTTP headers](#defining-http-headers)
 *   [Defining request body](#defining-request-body)
@@ -28,6 +29,12 @@ The example below shows the development team creation using the REST API compone
 2.  The URL of the REST API accepts JSONata expressions, meaning the URL address evaluates [JSONata](http://jsonata.org/) expressions.
 3.  Definition of request [headers](#defining-http-headers)
 4.  Definition of request [body](#defining-http-body), if the HTTP method is not `GET`
+
+## Enable debug logging
+
+The component supports extended logging. `Enable debug logging` checkbox should be enabled for it. After that you may check your logs in the logs console. 
+
+*Note:* in case of using **ordinary flows**, adding of `DEBUG` environment variable in component repository will override disabled `Enable debug logging` checkbox during flow run, so all logs will be extended until an environment variable is removed.
 
 ## Authorisation methods
 
