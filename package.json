@@ -3,6 +3,8 @@
     "version": "1.0.0",
     "description": "REST API component",
     "scripts": {
+        "docker:build": "docker build -t elasticio/rest-api-component:$(git log -n1 --format=%H) .",
+        "docker:push": "docker push elasticio/rest-api-component:$(git log -n1 --format=%H)",
         "test": "NODE_ENV=test mocha"
     },
     "repository": {
