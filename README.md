@@ -1,3 +1,5 @@
+[![Circle CI][circle-image]][circle-url]
+
 # REST API component
 
 The **REST API component** is a simple yet powerful component that allows you to connect to any REST API without programming your own components and deploying them into the platform.
@@ -205,3 +207,6 @@ If it get parse exception, it return response as is.`
 Here are some further limitation of the REST API component:
 
 *   The component can't handle multi-part responses
+
+[circle-image]: https://circleci.com/gh/elasticio/rest-api-component.svg?style=svg&circle-token=2bf8e1f60133011d1fdea9505afdbabbd12b0c7b
+[circle-url]: https://circleci.com/gh/elasticio/rest-api-component
