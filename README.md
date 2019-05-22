@@ -22,7 +22,7 @@ This document covers the following topics:
 
 The example below shows the development team creation using the REST API component with our own [REST API service](https://api.elastic.io/docs "elastic.io REST API service").
 
-![alt text](https://user-images.githubusercontent.com/18464641/58079974-ebb2ae00-7bba-11e9-99f8-1f7ced469471.jpg "REST API component features")
+![alt text](https://user-images.githubusercontent.com/36419533/58152399-2711b300-7c75-11e9-968e-75dfc5d19dd1.png)
 *Numbers show: (1) The URL and method of the REST API resource, (2) the HTTP call headers. (3) configuration options and (4) follow redirect mode.*
 
 1.  HTTP methods and URL
