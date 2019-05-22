@@ -1,6 +1,6 @@
 {
     "name": "@elasticio/rest-api-component",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "REST API component",
     "scripts": {
         "test": "NODE_ENV=test mocha"
@@ -19,9 +19,9 @@
         "eslint": "^4.19.1",
         "eslint-config-airbnb-base": "^13.0.0",
         "eslint-plugin-import": "^2.13.0",
-        "mocha": "^3.5.3",
+        "mocha": "^6.1.4",
         "nock": "^9.0.14",
-        "sinon": "^3.2.1"
+        "sinon": "^7.3.2"
     },
     "dependencies": {
         "@elastic.io/jsonata-moment": "1.0.14",

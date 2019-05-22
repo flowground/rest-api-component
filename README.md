@@ -22,19 +22,21 @@ This document covers the following topics:
 
 The example below shows the development team creation using the REST API component with our own [REST API service](https://api.elastic.io/docs "elastic.io REST API service").
 
-![alt text](https://cdn.elastic.io/documentation/restapi-component-featuresv2.png "REST API component features")
-*Numbers show: (1) HTTP methods, (2) the URL of the REST API resource, (3) the HTTP call headers and (4) the body of the HTTP request.*
+![alt text](https://user-images.githubusercontent.com/18464641/58079974-ebb2ae00-7bba-11e9-99f8-1f7ced469471.jpg "REST API component features")
+*Numbers show: (1) The URL and method of the REST API resource, (2) the HTTP call headers. (3) configuration options and (4) follow redirect mode.*
 
-1.  REST API component supports the following HTTP methods: `GET`, `PUT`, `POST`, `DELETE` and `PATCH`.
-2.  The URL of the REST API accepts JSONata expressions, meaning the URL address evaluates [JSONata](http://jsonata.org/) expressions.
-3.  Definition of request [headers](#defining-http-headers)
-4.  Definition of request [body](#defining-http-body), if the HTTP method is not `GET`
-
-## Enable debug logging
-
-The component supports extended logging. `Enable debug logging` checkbox should be enabled for it. After that you may check your logs in the logs console. 
-
-*Note:* in case of using **ordinary flows**, adding of `DEBUG` environment variable in component repository will override disabled `Enable debug logging` checkbox during flow run, so all logs will be extended until an environment variable is removed.
+1.  HTTP methods and URL
+ * REST API component supports the following HTTP methods: `GET`, `PUT`, `POST`, `DELETE` and `PATCH`.
+ * The URL of the REST API resources. Accepts JSONata expressions, meaning the URL address evaluates [JSONata](http://jsonata.org/) expressions.
+2. Request Headers and Body
+ * Definition of request [headers](#defining-http-headers)
+ * Definition of request [body](#defining-http-body), if the HTTP method is not `GET`
+3. Configuration options
+ * ``Don`t throw Error on Failed Calls`` - if enabled return error, error code and stacktrace in message body otherwise throw error in flow.
+ * ``Split Result if it is an Array`` - if enabled and response is array, creates message for each item of array. Otherwise create one message with response array. 
+ * ``Enable debug logging`` - The component supports extended logging. `Enable debug logging` checkbox should be enabled for it. After that you may check your logs in the logs console. 
+    *Note:* in case of using **ordinary flows**, adding of `DEBUG` environment variable in component repository will override disabled `Enable debug logging` checkbox during flow run, so all logs will be extended until an environment variable is removed.
+4. ``Follow redirect mode`` - If you want disable Follow Redirect functionality, you can use option ``Follow redirect mode``.By default ``Follow redirect mode`` option has value ``Follow redirects``.
 
 ## Authorisation methods
 
@@ -170,10 +172,6 @@ In this case output structure of component will be:
       statusMessage:<HTTP response status message>
     }
 ```
-## Redirection
-If you want disable Follow Redirect functionality, you can use option ``Follow redirect mode``.
-
-By default ``Follow redirect mode`` option has value ``Follow redirects`` 
 
 ## Attachments
 Rest API component has opportunity of binary data sending. You just need choose ``multipart/form-data`` Content type and attachments from input message will be included to the request payload automatically.
