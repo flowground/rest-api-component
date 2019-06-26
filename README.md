@@ -204,6 +204,11 @@ If it get parse exception, it return response as is.`
 
 > Make sure not to perform your tests using the [requestb.in](https://requestb.in/) since it responds with the `content-type: text/html`.
 
+Attachments limitations:
+
+1. Maximal possible size for an attachment is 10 MB.
+2. Attachments mechanism does not work with [Local Agent Installation](https://support.elastic.io/support/solutions/articles/14000076461-announcing-the-local-agent-)
+
 Here are some further limitation of the REST API component:
 
 *   The component can't handle multi-part responses
