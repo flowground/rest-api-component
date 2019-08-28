@@ -38,6 +38,10 @@
           "label": "Enable debug logging",
           "viewClass": "CheckBoxView"
         },
+        "enableRebound": {
+          "label": "Retry on failure",
+          "viewClass": "CheckBoxView"
+        },
         "followRedirect": {
           "label": "Follow redirect mode",
           "viewClass": "SelectView",
@@ -75,6 +79,10 @@
         },
         "enableDebugLogging": {
           "label": "Enable debug logging",
+          "viewClass": "CheckBoxView"
+        },
+        "enableRebound": {
+          "label": "Retry on failure",
           "viewClass": "CheckBoxView"
         },
         "followRedirect": {

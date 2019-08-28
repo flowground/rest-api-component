@@ -24,7 +24,7 @@ This document covers the following topics:
 
 The example below shows the development team creation using the REST API component with our own [REST API service](https://api.elastic.io/docs "elastic.io REST API service").
 
-![alt text](https://user-images.githubusercontent.com/36419533/58152399-2711b300-7c75-11e9-968e-75dfc5d19dd1.png)
+![alt text](https://user-images.githubusercontent.com/16806832/63769383-591d5b80-c8db-11e9-8b57-5890d4d4f21f.png)
 *Numbers show: (1) The URL and method of the REST API resource, (2) the HTTP call headers. (3) configuration options and (4) follow redirect mode.*
 
 1.  HTTP methods and URL
@@ -37,7 +37,17 @@ The example below shows the development team creation using the REST API compone
  * ``Don`t throw Error on Failed Calls`` - if enabled return error, error code and stacktrace in message body otherwise throw error in flow.
  * ``Split Result if it is an Array`` - if enabled and response is array, creates message for each item of array. Otherwise create one message with response array. 
  * ``Enable debug logging`` - The component supports extended logging. `Enable debug logging` checkbox should be enabled for it. After that you may check your logs in the logs console. 
+    
     *Note:* in case of using **ordinary flows**, adding of `DEBUG` environment variable in component repository will override disabled `Enable debug logging` checkbox during flow run, so all logs will be extended until an environment variable is removed.
+ * ``Retry on failure`` - enabling [rebound](https://support.elastic.io/support/solutions/articles/14000044750-why-and-where-we-use-the-rebound-) feature for following HTTP status codes:
+    - 408: Request Timeout
+    - 423: Locked
+    - 429: Too Many Requests
+    - 500: Internal Server Error (debatable)
+    - 502: Bad Gateway
+    - 503: Service Unavailable
+    - 504: Gateway Timeout
+    - DNS lookup timeout
 4. ``Follow redirect mode`` - If you want disable Follow Redirect functionality, you can use option ``Follow redirect mode``.By default ``Follow redirect mode`` option has value ``Follow redirects``.
 
 ## Authorisation methods
