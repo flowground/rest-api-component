@@ -43,7 +43,7 @@ The example below shows the development team creation using the REST API compone
     - 408: Request Timeout
     - 423: Locked
     - 429: Too Many Requests
-    - 500: Internal Server Error (debatable)
+    - 500: Internal Server Error
     - 502: Bad Gateway
     - 503: Service Unavailable
     - 504: Gateway Timeout
