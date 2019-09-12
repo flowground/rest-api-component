@@ -75,6 +75,8 @@ Use this section to add the request headers.
 
 Each header has a name and a value. Header name should be colon-separated name-value pairs in clear-text `string` format. The header value can use [JSONata](http://jsonata.org/) expressions.
 
+*Note:* **HTTP Response headers** will not be stored, the components stores body and attachment only.
+ 
 ## Defining request body
 
 The body may be defined if the HTTP method is not `GET`. The **body** tab enables configuration options such as the **content type** drop-down menu and the **body input field**.
@@ -90,6 +92,10 @@ Here is the list of all supported **content types**:
 *   `text/html`
 
 The **body input field** changes according to the chosen content type.
+
+*Notes:* 
+1. **Response body** will be stored in msg.body
+2. Request body that couses empty response body will return `{}`
 
 ### Sending JSON data
 
@@ -219,9 +225,6 @@ Attachments limitations:
 1. Maximal possible size for an attachment is 10 MB.
 2. Attachments mechanism does not work with [Local Agent Installation](https://support.elastic.io/support/solutions/articles/14000076461-announcing-the-local-agent-)
 
-Here are some further limitation of the REST API component:
-
-*   The component can't handle multi-part responses
 
 [circle-image]: https://circleci.com/gh/elasticio/rest-api-component.svg?style=svg&circle-token=2bf8e1f60133011d1fdea9505afdbabbd12b0c7b
 [circle-url]: https://circleci.com/gh/elasticio/rest-api-component
