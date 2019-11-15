@@ -17,6 +17,7 @@ This document covers the following topics:
 *   [HTTP Headers in Response](#http-headers)
 *   [Redirection](#redirection)
 *   [Attachments](#attachments)
+*   [Overriding Default Response Content-Type](#overriding-content-type)
 *   [Exception handling](#exception-handling)
 *   [Known Limitations](#known-limitations)
 
@@ -201,6 +202,17 @@ Rest-api component automatically load binary data to attachments with next conte
 * application/msexcel
 * application/pdf
 * application/octet-stream
+
+## Overriding Content-Type
+The REST API component has an optional configuration dropdown that allows you to override the default `Content-Type` value of the response. The options provided allow you to treat every response consistently, overriding the default behaviour of its type.
+
+The options and their results are as follows:
+
+- Default: uses the default `Content-Type` value for each response received.
+- Parse as JSON: every response will be parsed as a JSON object and returned accordingly. If the response is not valid JSON, an error is thrown.
+- Parse as XML: every response will be parsed as XML, converted to JSON, and returned accordingly. If the response is not valid XML, an error is thrown.
+- Treat Response as Text: regardless of type, every response will be returned as a string in the object `{result: string}`.
+- Store as attachment: regardless of type, every response will be made an attachment and added to the payload automatically. The message body will return details on the created attachments accordingly.
 
 ## Exception handling
 Rest API component uses exception handling logic below: 

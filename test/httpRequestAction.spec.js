@@ -971,6 +971,35 @@ describe('httpRequest action', () => {
       expect(result.body).to.be.deep.equal(responseMessage);
     });
 
+    it('overrides to JSON response correctly and throws an error for bad JSON', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'parseAsJSON',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = 'hello';
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'text' });
+
+      await processAction.call(emitter, msg, cfg)
+        .catch((e) => {
+          expect(e.message).to.be.equal('Unexpected token h in JSON at position 0');
+        });
+    });
+
     it('overrides to XML response correctly', async () => {
       const method = 'POST';
       const msg = {
@@ -996,6 +1025,33 @@ describe('httpRequest action', () => {
 
       const result = await processAction.call(emitter, msg, cfg);
       expect(result.body).to.be.deep.equal({ hello: 'world' });
+    });
+
+    it('overrides to XML response correctly and throws error for invalid XML', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'parseAsXML',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = '<?xml version="1.0" encoding="UTF-8"?><hello>world';
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'text' });
+
+      await processAction.call(emitter, msg, cfg)
+        .catch(e => expect(e.message).to.include('Invalid XML structure'));
     });
 
     it('overrides to a text response correctly', async () => {
