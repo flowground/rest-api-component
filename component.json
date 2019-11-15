@@ -43,6 +43,18 @@
           "label": "Retry on failure",
           "viewClass": "CheckBoxView"
         },
+        "overrideContentType" : {
+          "label": "Override Content-Type",
+          "viewClass": "SelectView",
+          "model": {
+            "default": "Use default Content-Type",
+            "parseAsJSON": "Parse as JSON",
+            "parseAsXML": "Parse as XML",
+            "treatAsText": "Treat Response as Text",
+            "storeAsAttachment": "Store as attachment"
+          },
+          "prompt": "Use default Content-Type"
+        },
         "followRedirect": {
           "label": "Follow redirect mode",
           "viewClass": "SelectView",
@@ -85,6 +97,18 @@
         "enableRebound": {
           "label": "Retry on failure",
           "viewClass": "CheckBoxView"
+        },
+        "overrideContentType" : {
+          "label": "Override Content-Type",
+          "viewClass": "SelectView",
+          "model": {
+            "default": "Use default Content-Type",
+            "parseAsJSON": "Parse as JSON",
+            "parseAsXML": "Parse as XML",
+            "treatAsText": "Treat Response as Text",
+            "storeAsAttachment": "Store as attachment"
+          },
+          "prompt": "Use default Content-Type"
         },
         "followRedirect": {
           "label": "Follow redirect mode",

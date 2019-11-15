@@ -5,6 +5,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const nock = require('nock');
 const { messages } = require('elasticio-node');
+const attachment = require('../lib/attachments');
 
 const { stub } = sinon;
 
@@ -889,6 +890,179 @@ describe('httpRequest action', () => {
     });
   });
 
+  describe('Overriding the default content-type', () => {
+    it('does not override if config is not set', async () => {
+      const method = 'GET';
+      const msg = {
+        body: {
+          url: 'http://example.com/message',
+        },
+      };
+
+      const cfg = {
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = { hello: 'world' };
+
+      nock('http://example.com')
+        .get('/message')
+        .reply(204, responseMessage, { 'content-type': 'json' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.body).to.be.deep.equal(responseMessage);
+    });
+
+    it('does not override if config is set to default', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'default',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = { hello: 'world' };
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'json' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.body).to.be.deep.equal(responseMessage);
+    });
+
+    it('overrides to JSON response correctly', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'parseAsJSON',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = { hello: 'world' };
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'text' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.body).to.be.deep.equal(responseMessage);
+    });
+
+    it('overrides to XML response correctly', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'parseAsXML',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = '<?xml version="1.0" encoding="UTF-8"?><hello>world</hello>';
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'text' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.body).to.be.deep.equal({ hello: 'world' });
+    });
+
+    it('overrides to a text response correctly', async () => {
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        overrideContentType: 'treatAsText',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      const responseMessage = '<?xml version="1.0" encoding="UTF-8"?><hello>world</hello>';
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'xml' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.body).to.be.deep.equal({ result: responseMessage });
+    });
+
+    it('overrides to add an attachment correctly', async () => {
+      const responseMessage = { hello: 'world' };
+      const method = 'POST';
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      sinon.stub(attachment, 'addAttachment').callsFake(() => {
+        msg.attachments = {
+          url: 'aaaaaaaaa',
+          body: responseMessage,
+        };
+        return Promise.resolve();
+      });
+
+      const cfg = {
+        overrideContentType: 'storeAsAttachment',
+        reader: {
+          url: 'url',
+          method,
+        },
+        auth: {},
+      };
+
+      nock(msg.body.url)
+        .intercept('/', method)
+        .reply(204, responseMessage, { 'content-type': 'json' });
+
+      const result = await processAction.call(emitter, msg, cfg);
+      expect(result.attachments).to.be.deep.equal({
+        url: 'aaaaaaaaa',
+        body: responseMessage,
+      });
+    });
+  });
+
   describe('redirection', () => {
     it('redirect request true && dontThrowErrorFlg true', async () => {
       const messagesNewMessageWithBodyStub = stub(messages, 'newMessageWithBody')
@@ -995,10 +1169,10 @@ describe('httpRequest action', () => {
       await processAction.call(emitter, msg, cfg);
       expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.deep.equal({
         headers:
-          {
-            location: 'http://example.com/Login',
-            'content-type': 'application/json',
-          },
+        {
+          location: 'http://example.com/Login',
+          'content-type': 'application/json',
+        },
         body: { state: 'before redirection' },
         statusCode: 302,
         statusMessage: null,
