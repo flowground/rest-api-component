@@ -5,6 +5,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const nock = require('nock');
 const { messages } = require('elasticio-node');
+const logger = require('@elastic.io/component-logger')();
 
 const { stub } = sinon;
 
@@ -25,6 +26,7 @@ describe('httpRequest action', () => {
           resolve();
         }, 1);
       })),
+      logger,
     };
   });
 
