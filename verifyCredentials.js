@@ -10,19 +10,19 @@ const authTypes = {
  * @returns Promise which resolves true
  */
 function verify(credentials) {
-  console.log('credentials:', JSON.stringify(credentials));
+  this.logger.info('credentials:', JSON.stringify(credentials));
   // access the value of the auth field defined in credentials section of component.json
   // eslint-disable-next-line no-unused-vars
   const { type, basic, digest } = credentials.auth;
 
   if (type === authTypes.BASIC) {
     if (!basic.username) {
-      console.log('Error: Username is required for basic auth');
+      this.logger.info('Error: Username is required for basic auth');
       throw new Error('Username is required for basic auth');
     }
 
     if (!basic.password) {
-      console.log('Error: Password is required for basic auth');
+      this.logger.info('Error: Password is required for basic auth');
       throw new Error('Password is required for basic auth');
     }
   }

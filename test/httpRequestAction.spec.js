@@ -6,6 +6,7 @@ const { expect } = require('chai');
 const nock = require('nock');
 const { messages } = require('elasticio-node');
 const logger = require('@elastic.io/component-logger')();
+const attachment = require('../lib/attachments');
 
 const { stub } = sinon;
 
