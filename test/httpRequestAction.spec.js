@@ -334,7 +334,7 @@ describe('httpRequest action', () => {
 
         processAction.call(emitter, msg, cfg);
       });
-      it('should properly pass formdata body', (done) => {
+      it('should properly pass formdata body', async (done) => {
         const msg = {
           body: {
             url: 'http://example.com',
@@ -381,7 +381,7 @@ describe('httpRequest action', () => {
             ];
           });
 
-        processAction.call(emitter, msg, cfg);
+        await processAction.call(emitter, msg, cfg);
       });
     });
   });
@@ -408,7 +408,7 @@ describe('httpRequest action', () => {
         .delay(20 + Math.random() * 200)
         .replyWithError('something awful happened');
       await processAction.call(emitter, msg, cfg).catch((e) => {
-        expect(e.message).to.be.eql('Error: something awful happened');
+        expect(e.message).to.be.eql('something awful happened');
       });
     });
 
@@ -474,7 +474,7 @@ describe('httpRequest action', () => {
   });
 
   describe('when some args are wrong', () => {
-    it('should throw error if cfg.reader.method is absent', (done) => {
+    it('should throw error if cfg.reader.method is absent', async () => {
       const msg = {
         body: {
           url: 'example.com',
@@ -489,14 +489,12 @@ describe('httpRequest action', () => {
       };
 
       try {
-        processAction.call(emitter, msg, cfg);
+        await processAction.call(emitter, msg, cfg);
       } catch (err) {
         expect(err.message).equal('Method is required');
-
-        done();
       }
     });
-    it('should throw error if cfg.reader.url is absent', (done) => {
+    it('should throw error if cfg.reader.url is absent', async () => {
       const msg = {
         body: {
           url: 'example.com',
@@ -511,14 +509,12 @@ describe('httpRequest action', () => {
       };
 
       try {
-        processAction.call(emitter, msg, cfg);
+        await processAction.call(emitter, msg, cfg);
       } catch (err) {
         expect(err.message).equal('URL is required');
-
-        done();
       }
     });
-    it('should throw error if cfg.reader.method is wrong', (done) => {
+    it('should throw error if cfg.reader.method is wrong', async () => {
       const msg = {
         body: {
           url: 'example.com',
@@ -534,13 +530,11 @@ describe('httpRequest action', () => {
       };
 
       try {
-        processAction.call(emitter, msg, cfg);
+        await processAction.call(emitter, msg, cfg);
       } catch (err) {
         expect(err.message).equal(
           `Method "${cfg.reader.method}" isn't one of the: DELETE,GET,PATCH,POST,PUT.`,
         );
-
-        done();
       }
     });
   });

@@ -16,7 +16,7 @@
         "node": ">=10.15.0"
     },
     "dependencies": {
-        "@elastic.io/component-commons-library": "0.0.8-dev.1",
+        "@elastic.io/component-commons-library": "0.0.8-dev.3",
         "@elastic.io/jsonata-moment": "1.1.4",
         "duplex": "1.0.0",
         "elasticio-node": "0.0.9",
