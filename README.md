@@ -9,7 +9,6 @@ The REST API component will perform a single REST API call when executed. Incomi
 This document covers the following topics:
 
 *   [Introduction](#introduction)
-*   [Enable debug logging](#enable-debug-logging)
 *   [Authorisation methods](#authorisation-methods)
 *   [Defining HTTP headers](#defining-http-headers)
 *   [Defining request body](#defining-request-body)
@@ -35,10 +34,7 @@ The example below shows the development team creation using the REST API compone
  * Definition of request [body](#defining-http-body), if the HTTP method is not `GET`
 3. Configuration options
  * ``Don`t throw Error on Failed Calls`` - if enabled return error, error code and stacktrace in message body otherwise throw error in flow.
- * ``Split Result if it is an Array`` - if enabled and response is array, creates message for each item of array. Otherwise create one message with response array. 
- * ``Enable debug logging`` - The component supports extended logging. `Enable debug logging` checkbox should be enabled for it. After that you may check your logs in the logs console. 
-    
-    *Note:* in case of using **ordinary flows**, adding of `DEBUG` environment variable in component repository will override disabled `Enable debug logging` checkbox during flow run, so all logs will be extended until an environment variable is removed.
+ * ``Split Result if it is an Array`` - if enabled and response is array, creates message for each item of array. Otherwise create one message with response array.  
  * ``Retry on failure`` - enabling [rebound](https://support.elastic.io/support/solutions/articles/14000044750-why-and-where-we-use-the-rebound-) feature for following HTTP status codes:
     - 408: Request Timeout
     - 423: Locked
