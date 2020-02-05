@@ -60,7 +60,6 @@ REST API component supports 3 authorisation types:
 *   `No Auth` - use this method to work with any open REST API
 *   `Basic Auth` - use it to provide login credentials like **username/password**
 *   `API Key Auth` - use it to provide `API Key` to access the resource
-*   `OAuth2` - use it to provide `Oauth2` credentials to access the resource
 
 Please note that the result of creating a credential is an HTTP header automatically placed for you. You can also specify the authorisation in the headers section directly.
 

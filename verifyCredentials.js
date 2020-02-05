@@ -1,7 +1,6 @@
 const authTypes = {
   BASIC: 'Basic Auth',
   DIGEST: 'Digest Auth',
-  OAUTH2: 'OAuth2',
 };
 
 /**

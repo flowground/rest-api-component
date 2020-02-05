@@ -9,12 +9,6 @@
         "required": false,
         "viewClass": "HTTPAuthView"
       }
-    },
-    "oauth2" : {
-      "client_id" : "{{clientId}}",
-      "client_secret" : "{{clientSecret}}",
-      "auth_uri" : "{{authUri}}",
-      "token_uri" : "{{tokenUri}}"
     }
   },
   "triggers": {
