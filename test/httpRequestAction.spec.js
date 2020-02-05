@@ -851,7 +851,7 @@ describe('httpRequest action', () => {
           responseMessage,
         ]);
       await processAction.call(emitter, msg, cfg);
-      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql(responseMessage);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql({ result: responseMessage });
     });
     it('XML string without content-type   && dontThrowErrorFlg true', async () => {
       const messagesNewMessageWithBodyStub = stub(messages, 'newMessageWithBody')
@@ -1180,7 +1180,7 @@ describe('httpRequest action', () => {
           rawString,
         ]);
       await processAction.call(emitter, inputMsg, cfg);
-      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql(rawString);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql({ result: rawString });
     });
   });
 
