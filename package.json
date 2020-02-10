@@ -27,7 +27,8 @@
         "v": "0.3.0",
         "xml2js": "0.4.19",
         "xml2js-es6-promise": "1.1.1",
-        "yarn": "1.7.0"
+        "yarn": "1.7.0",
+        "@elastic.io/component-commons-library": "0.0.8-alfa.6"
     },
     "devDependencies": {
         "@elastic.io/component-logger": "0.0.1",
