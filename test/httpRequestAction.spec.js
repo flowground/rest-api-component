@@ -302,7 +302,7 @@ describe('httpRequest action', () => {
       await processAction.call(emitter, msg, cfg);
       // eslint-disable-next-line no-unused-expressions
       expect(messagesNewMessageWithBodyStub.calledOnce).to.be.true;
-      expect(messagesNewMessageWithBodyStub.args[0][0]).to.be.eql(responseMessage);
+      expect(messagesNewMessageWithBodyStub.args[0][0]).to.be.eql({ result: responseMessage });
     });
     it('splitResult=true should be ignored if item is not array', async () => {
       const messagesNewMessageWithBodyStub = stub(messages, 'newMessageWithBody')
@@ -1059,7 +1059,7 @@ describe('httpRequest action', () => {
           responseMessage,
         ]);
       await processAction.call(emitter, msg, cfg);
-      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql(responseMessage);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql({ result: responseMessage });
     });
     it('XML string without content-type   && dontThrowErrorFlg true', async () => {
       const messagesNewMessageWithBodyStub = stub(messages, 'newMessageWithBody')
@@ -1091,7 +1091,7 @@ describe('httpRequest action', () => {
         ]);
       await processAction.call(emitter, msg, cfg);
       expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.deep.equal({
-        body: responseMessage,
+        body: { result: responseMessage },
         headers: {},
         statusCode: 200,
         statusMessage: null,
@@ -1388,7 +1388,7 @@ describe('httpRequest action', () => {
           rawString,
         ]);
       await processAction.call(emitter, inputMsg, cfg);
-      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql(rawString);
+      expect(messagesNewMessageWithBodyStub.lastCall.args[0]).to.eql({ result: rawString });
     });
   });
 
