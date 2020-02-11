@@ -1,6 +1,6 @@
 {
     "name": "@elasticio/rest-api-component",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "description": "REST API component",
     "scripts": {
         "pretest": "eslint lib test verifyCredentials.js",
