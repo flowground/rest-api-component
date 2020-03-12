@@ -57,6 +57,36 @@ describe('httpRequest action', () => {
       }
     });
 
+    it('should fail if auth.oauth2.keys.refresh_token is missing', async () => {
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+      };
+
+      const cfg = {
+        reader: {
+          url: 'url',
+          method: 'POST',
+        },
+        auth: {
+          type: 'OAuth2',
+          oauth2: {
+            keys: {
+              access_token: 'token',
+            },
+          },
+        },
+      };
+
+      try {
+        await processAction.call(emitter, msg, cfg);
+        throw new Error('This line should never be called because await above should throw an error');
+      } catch (err) {
+        expect(err.message).equal('No refresh tokens were returned by the OAuth2 provider. Try to add access_type:offline as an additional parameter');
+      }
+    });
+
     it('should send request with oauth2 headers, with refreshed token', async () => {
       const msg = {
         body: {

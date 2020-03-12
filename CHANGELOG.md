@@ -1,3 +1,8 @@
+## 1.2.1(March 12, 2020)
+
+### Added
+* Add validity check of `refresh_token` in keys for `OAuth2` authentication strategy
+
 ## 1.2.0(February 13, 2020)
 
 ### Added

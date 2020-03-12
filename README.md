@@ -205,7 +205,7 @@ Rest API component uses exception handling logic below:
 
 ## Known Limitations
 
-The component can parse any of json and xml content types. 
+**1.** The component can parse any of json and xml content types. 
 There are:
 * application/json
 * application/xml
@@ -215,13 +215,13 @@ There are:
 `If content type is not  exists  in response header, component will try parse response as json. 
 If it get parse exception, it return response as is.`
 
-> Make sure not to perform your tests using the [requestb.in](https://requestb.in/) since it responds with the `content-type: text/html`.
+**2.** Attachments limitations:
 
-Attachments limitations:
+    1. Maximal possible size for an attachment is 10 MB.
+    2. Attachments mechanism does not work with [Local Agent Installation](https://support.elastic.io/support/solutions/articles/14000076461-announcing-the-local-agent-)
 
-1. Maximal possible size for an attachment is 10 MB.
-2. Attachments mechanism does not work with [Local Agent Installation](https://support.elastic.io/support/solutions/articles/14000076461-announcing-the-local-agent-)
-
+**3.** OAuth2 authentication strategy limitation: [Access Token Response](https://www.oauth.com/oauth2-servers/access-tokens/access-token-response/) contains `refresh_token` optional property, but due to EIO platform limitation it is required.
+Possible solution - use access_type:offline in additional parameters (may not work in some cases).
 
 [circle-image]: https://circleci.com/gh/elasticio/rest-api-component.svg?style=svg&circle-token=2bf8e1f60133011d1fdea9505afdbabbd12b0c7b
 [circle-url]: https://circleci.com/gh/elasticio/rest-api-component
