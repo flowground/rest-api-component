@@ -198,6 +198,9 @@ Rest-api component automatically load binary data to attachments with next conte
 * application/msexcel
 * application/pdf
 * application/octet-stream
+* application/x-binary
+* application/binary
+* application/macbinary
 
 ## Exception handling
 Rest API component uses exception handling logic below: 

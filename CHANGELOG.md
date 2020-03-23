@@ -1,3 +1,6 @@
+## 1.2.2 (March 19, 2020)
+* Add binary message types to list for processing them as attachments
+
 ## 1.2.1(March 12, 2020)
 
 ### Added
