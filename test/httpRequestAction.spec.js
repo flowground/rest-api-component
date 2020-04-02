@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 
-const jsonata = require('@elastic.io/jsonata-moment');
+const { JsonataTransform } = require('@elastic.io/component-commons-library');
 const sinon = require('sinon');
 const { expect } = require('chai');
 const nock = require('nock');
@@ -282,6 +282,7 @@ describe('httpRequest action', () => {
         body: {
           url: 'http://example.com',
         },
+        passthrough: { test: 'test' },
       };
       const cfg = {
         splitResult: true,
@@ -292,7 +293,8 @@ describe('httpRequest action', () => {
         auth: {},
       };
       const responseMessage = ['first', 'second', 'third'];
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg,
+        { expression: cfg.reader.url }, emitter))
         .intercept('/', 'POST')
         .reply((uri, requestBody) => [
           200,
@@ -322,7 +324,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
       const responseMessage = ['first', 'second', 'third'];
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .post('/')
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -351,7 +353,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
       const responseMessage = { data: 'not array' };
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .post('/')
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -387,7 +389,7 @@ describe('httpRequest action', () => {
 
         const responseMessage = { message: `hello world ${index}` };
 
-        nock(jsonata(cfg.reader.url).evaluate(msg.body))
+        nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
           .intercept('/', method)
           .delay(20 + Math.random() * 200)
           .reply((uri, requestBody) => [
@@ -426,7 +428,7 @@ describe('httpRequest action', () => {
 
         // Due to different timezones of developers and production server
         // we can not hardcode expected evaluation result
-        const sampleHeaderValue = jsonata('$moment(1519834345000).format()').evaluate({});
+        const sampleHeaderValue = JsonataTransform.jsonataTransform(messages.newEmptyMessage(), { expression: '$moment(1519834345000).format()' }, emitter);
         expect(sampleHeaderValue.includes('2018-02-28')).to.equal(true);
 
         nock('http://example.com', {
@@ -472,7 +474,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = 'hello world';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body), {
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter), {
         reqheaders: {
           'Content-Type': 'text/html; charset=UTF-8',
         },
@@ -520,7 +522,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = 'hello world';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body), {
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter), {
         reqheaders: {
           Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           Connection: 'keep-alive',
@@ -565,7 +567,7 @@ describe('httpRequest action', () => {
 
         const responseMessage = 'hello world';
 
-        nock(jsonata(cfg.reader.url).evaluate(msg.body))
+        nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
           .post('/', /Lorem\sipsum/gi)
           .delay(20 + Math.random() * 200)
           .reply((uri, requestBody) => {
@@ -614,7 +616,7 @@ describe('httpRequest action', () => {
 
         const responseMessage = 'hello world';
 
-        nock(jsonata(cfg.reader.url).evaluate(msg.body))
+        nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
           .post('/', body => body.replace(/[\n\r]/g, '').match(/foo.+bar.+baz.+qwe.+hello.+world/))
           .delay(20 + Math.random() * 200)
           .reply((uri, requestBody) => {
@@ -647,7 +649,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .replyWithError('something awful happened');
@@ -676,7 +678,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .replyWithError('something awful happened');
@@ -704,7 +706,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(408, 'Error');
@@ -805,7 +807,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(204, responseMessage);
@@ -836,7 +838,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(204, responseMessage);
@@ -865,7 +867,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(200, '<xml>foo</xml>', {
@@ -903,7 +905,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(200, '<xml>foo</xml>', {
@@ -933,7 +935,7 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply(200, '<xml>foo</xmlasdf>', {
@@ -968,7 +970,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = 'boom!';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -1004,7 +1006,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '{"id":"1", "name":"John", "surname":"Malkovich"}';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -1044,7 +1046,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '{"id":"1", "name":"John", "surname":"Malkovich"}';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -1081,7 +1083,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '<first>1</first><second>2</second>';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
@@ -1112,7 +1114,7 @@ describe('httpRequest action', () => {
 
       const responseMessage = '<first>1</first><second>2</second>';
 
-      nock(jsonata(cfg.reader.url).evaluate(msg.body))
+      nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
         .intercept('/', method)
         .delay(20 + Math.random() * 200)
         .reply((uri, requestBody) => [
