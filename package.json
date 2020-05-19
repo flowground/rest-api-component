@@ -1,6 +1,6 @@
 {
     "name": "@elasticio/rest-api-component",
-    "version": "1.2.4",
+    "version": "1.2.5",
     "description": "REST API component",
     "scripts": {
         "pretest": "eslint lib test verifyCredentials.js",
@@ -13,14 +13,14 @@
     "author": "elastic.io GmbH",
     "license": "BSD-2-Clause",
     "engines": {
-        "node": ">=12.0"
+        "node": ">=12.13.0"
     },
     "dependencies": {
         "@elastic.io/component-commons-library": "1.1.2",
         "duplex": "1.0.0",
         "elasticio-node": "0.0.9",
         "elasticio-rest-node": "1.2.1",
-        "elasticio-sailor-nodejs": "2.5.4",
+        "elasticio-sailor-nodejs": "2.6.7",
         "request": "2.83.0",
         "request-promise": "4.2.2",
         "uuid": "3.3.2",

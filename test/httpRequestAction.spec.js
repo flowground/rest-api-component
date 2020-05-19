@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-unused-vars,arrow-parens */
 
 const { JsonataTransform } = require('@elastic.io/component-commons-library');
 const sinon = require('sinon');
@@ -618,7 +618,7 @@ describe('httpRequest action', () => {
         const responseMessage = 'hello world';
 
         nock(JsonataTransform.jsonataTransform(msg, { expression: cfg.reader.url }, emitter))
-          .post('/', body => body.replace(/[\n\r]/g, '').match(/foo.+bar.+baz.+qwe.+hello.+world/))
+          .post('/', (body) => body.replace(/[\n\r]/g, '').match(/foo.+bar.+baz.+qwe.+hello.+world/))
           .delay(20 + Math.random() * 200)
           .reply((uri, requestBody) => {
             done();

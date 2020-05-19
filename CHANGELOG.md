@@ -1,3 +1,6 @@
+## 1.2.5 (May 19, 2020)
+* Update sailor version to 2.6.7
+
 ## 1.2.4 (April 9, 2020)
 * Fix `No refresh tokens were returned by the OAuth2 provider` error for credentials with non-expiring refresh_token
 
