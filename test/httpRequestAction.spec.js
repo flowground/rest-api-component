@@ -1479,12 +1479,47 @@ describe('httpRequest action', () => {
         auth: {},
       };
 
-      await processAction.call(emitter, msg, cfg).then((result) => {
-        throw new Error('Test case does not expect success response');
-      }).catch((e) => {
-        // TODO: should be 'Code: 404 Message: Not Found' but nock doesn't allow statusMessage to be mocked https://github.com/nock/nock/issues/469
-        expect(e.message).to.be.eql('Code: 404 Message: HTTP error');
-      });
+      await processAction.call(emitter, msg, cfg);
+      expect(emitter.emit.callCount).to.equal(2);
+      expect(emitter.emit.args[0][0]).to.equal('error');
+      expect(emitter.emit.args[1][0]).to.equal('end');
+    });
+  });
+
+  describe('delay between calls', () => {
+    it('should wait delayBetweenCalls', async () => {
+      const messagesNewMessageWithBodyStub = stub(messages, 'newMessageWithBody')
+        .returns(Promise.resolve());
+      const msg = {
+        body: {
+          url: 'http://example.com',
+        },
+        passthrough: { test: 'test' },
+      };
+      const cfg = {
+        splitResult: true,
+        reader: {
+          url: 'url',
+          method: 'POST',
+        },
+        auth: {},
+        delay: '20',
+        callCount: '4',
+      };
+      const responseMessage = ['first', 'second', 'third'];
+      nock(JsonataTransform.jsonataTransform(msg,
+        { expression: cfg.reader.url }, emitter))
+        .intercept('/', 'POST')
+        .reply((uri, requestBody) => [
+          200,
+          responseMessage,
+        ]);
+      await processAction.call(emitter, msg, cfg);
+      // eslint-disable-next-line no-unused-expressions
+      expect(messagesNewMessageWithBodyStub.calledThrice).to.be.true;
+      expect(messagesNewMessageWithBodyStub.args[0][0]).to.be.eql('first');
+      expect(messagesNewMessageWithBodyStub.args[1][0]).to.be.eql('second');
+      expect(messagesNewMessageWithBodyStub.args[2][0]).to.be.eql('third');
     });
   });
 });

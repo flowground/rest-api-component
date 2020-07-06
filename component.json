@@ -48,6 +48,10 @@
           "label": "Retry on failure",
           "viewClass": "CheckBoxView"
         },
+        "noStrictSSL": {
+          "label": "Do not verify SSL certificate (unsafe)",
+          "viewClass": "CheckBoxView"
+        },
         "followRedirect": {
           "label": "Follow redirect mode",
           "viewClass": "SelectView",
@@ -56,6 +60,16 @@
             "doNotFollowRedirects": "Do not follow redirects"
           },
           "prompt": "Follow redirects (default)"
+        },
+        "delay": {
+          "label": "Delay",
+          "viewClass": "TextFieldView",
+          "note": "Delay calling the next request after the previous request. Time for the delay is calculated as `Delay`/ `Call Count` and shouldn't be more than 1140 seconds (19 minutes due to platform limitation). The `Call Count` value by default is 1. If you want to use another value, please set the `Call Count` field. "
+        },
+        "callCount": {
+          "label": "Call Count",
+          "viewClass": "TextFieldView",
+          "note": "Value should be set only in pair with `Delay`, default to 1"
         }
       }
     }
@@ -90,6 +104,11 @@
           "label": "Retry on failure",
           "viewClass": "CheckBoxView"
         },
+        "noStrictSSL": {
+          "label": "Do not verify SSL certificate (unsafe)",
+          "viewClass": "CheckBoxView",
+          "note": "Unsafe option! Check it if you want to disable SSL certificate verification on the server"
+        },
         "followRedirect": {
           "label": "Follow redirect mode",
           "viewClass": "SelectView",
@@ -98,6 +117,16 @@
             "doNotFollowRedirects": "Do not follow redirects"
           },
           "prompt": "Follow redirects (default)"
+        },
+        "delay": {
+          "label": "Delay",
+          "viewClass": "TextFieldView",
+          "note": "Delay calling the next request after the previous request. Time for the delay is calculated as `Delay`/ `Call Count` and shouldn't be more than 1140 seconds (19 minutes due to platform limitation). The `Call Count` value by default is 1. If you want to use another value, please set the `Call Count` field. "
+        },
+        "callCount": {
+          "label": "Call Count",
+          "viewClass": "TextFieldView",
+          "note": "Value should be set only in pair with `Delay`, default to 1"
         }
       }
     }
