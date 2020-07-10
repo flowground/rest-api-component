@@ -1,3 +1,6 @@
+## 1.2.9 (July 10, 2020)
+* Timeout configuration field
+
 ## 1.2.8 (July 6, 2020)
 * Add configuration fields: `Delay` and `Call Count` for rate limit
 * Update sailor version to 2.6.13

@@ -23,7 +23,7 @@ This document covers the following topics:
 
 The example below shows the development team creation using the REST API component with our own [REST API service](https://api.elastic.io/docs "elastic.io REST API service").
 
-![image](https://user-images.githubusercontent.com/16806832/85531423-6d270c00-b617-11ea-8a43-317932364a85.png)
+![image](https://user-images.githubusercontent.com/22715422/87129437-000fa980-c29a-11ea-920c-cc161db6cb3a.png)
 *Numbers show: (1) The URL and method of the REST API resource, (2) the HTTP call headers. (3) configuration options and (4) follow redirect mode.*
 
 1.  HTTP methods and URL
@@ -51,6 +51,8 @@ Time for the delay is calculated as `Delay`/ `Call Count` and shouldn't be more 
 The `Call Count` value by default is 1. If you want to use another value, please set the `Call Count` field. 
 Notice: See [Known Limitations](#known-limitations) about `Delay` value.
 7. ``Call Count`` - the field should be used only in pair with `Delay`, default to 1.
+8. ``Request timeout`` - Timeout period in milliseconds (1-1140000) while component waiting for server response, also can be configured with REQUEST_TIMEOUT environment variable if configuration field is not provided. Defaults to 100000 (100 sec).
+Notice: Specified for component REQUEST_TIMEOUT enviroment variable would be overwritten by specified value of Request timeout, default value would be also overwritten
 
 ## Authorisation methods
 

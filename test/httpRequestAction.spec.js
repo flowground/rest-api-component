@@ -1522,4 +1522,28 @@ describe('httpRequest action', () => {
       expect(messagesNewMessageWithBodyStub.args[2][0]).to.be.eql('third');
     });
   });
+
+  describe('timeout configuration', () => {
+    it('should fail on small timeout', async () => {
+      const msg = {
+        body: {
+          url: 'https://httpstat.us/200?sleep=5000',
+        },
+        passthrough: { test: 'test' },
+      };
+      const cfg = {
+        splitResult: true,
+        reader: {
+          url: 'url',
+          method: 'GET',
+        },
+        auth: {},
+        requestTimeoutPeriod: '1000',
+      };
+
+      await processAction.call(emitter, msg, cfg);
+      expect(emitter.emit.getCall(0).args[0]).to.be.equals('error');
+      expect(emitter.emit.getCall(0).args[1].message).to.be.equals(`Timeout error! Waiting for response more than ${cfg.requestTimeoutPeriod} ms`);
+    });
+  });
 });

@@ -69,7 +69,12 @@
         "callCount": {
           "label": "Call Count",
           "viewClass": "TextFieldView",
-          "note": "Value should be set only in pair with `Delay`, default to 1"
+          "note": "Value should be set only in pair with `Delay`, defaults to 1"
+        },
+        "requestTimeoutPeriod": {
+          "label": "Request timeout",
+          "viewClass": "TextFieldView",
+          "note": "Timeout period in milliseconds while component waiting for server response, should be positive integer (1-1140000), defaults to 100000 (100 sec)"
         }
       }
     }
@@ -126,7 +131,12 @@
         "callCount": {
           "label": "Call Count",
           "viewClass": "TextFieldView",
-          "note": "Value should be set only in pair with `Delay`, default to 1"
+          "note": "Value should be set only in pair with `Delay`, defaults to 1"
+        },
+        "requestTimeoutPeriod": {
+          "label": "Request timeout",
+          "viewClass": "TextFieldView",
+          "note": "Timeout period in milliseconds while component waiting for server response, should be positive integer (1-1140000), defaults to 100000 (100 sec)"
         }
       }
     }
