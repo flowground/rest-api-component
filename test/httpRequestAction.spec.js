@@ -16,6 +16,7 @@ describe('httpRequest action', () => {
   let currentlyEmitting = false;
   beforeEach(() => {
     sinon.restore();
+    currentlyEmitting = false;
     emitter = {
       emit: stub().returns(new Promise((resolve) => {
         // eslint-disable-next-line no-unused-expressions
@@ -28,6 +29,10 @@ describe('httpRequest action', () => {
       })),
       logger,
     };
+  });
+
+  afterEach(() => {
+    delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
   });
 
   describe('oauth2 credentials', () => {
@@ -1540,6 +1545,9 @@ describe('httpRequest action', () => {
         auth: {},
         requestTimeoutPeriod: '1000',
       };
+
+      // Workaround for https://github.com/Readify/httpstatus/issues/79
+      process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0;
 
       await processAction.call(emitter, msg, cfg);
       expect(emitter.emit.getCall(0).args[0]).to.be.equals('error');
