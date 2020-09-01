@@ -1554,4 +1554,30 @@ describe('httpRequest action', () => {
       expect(emitter.emit.getCall(0).args[1].message).to.be.equals(`Timeout error! Waiting for response more than ${cfg.requestTimeoutPeriod} ms`);
     });
   });
+
+  describe('url encode', () => {
+    it('should encode url with get parameters', async () => {
+      nock('https://testmocked.com', { encodedQueryParams: true })
+        .get('/test?foo=%E6%88%90%E9%83%BD%E6%8E%A2&bar=%E6%9C%89%E9%99%90%E5%85%AC')
+        .reply(200, { status: 'OK' });
+
+      const msg = {
+        body: {
+          url: 'https://testmocked.com/test?foo=成都探&bar=有限公',
+        },
+      };
+      const cfg = {
+        splitResult: true,
+        reader: {
+          url: 'url',
+          method: 'GET',
+        },
+        auth: {},
+      };
+
+      await processAction.call(emitter, msg, cfg);
+      expect(emitter.emit.getCall(0).args[0]).to.be.equals('data');
+      expect(emitter.emit.getCall(0).args[1].body).to.be.deep.equals({ status: 'OK' });
+    });
+  });
 });

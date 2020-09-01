@@ -1,3 +1,6 @@
+## 1.2.11 (September 6, 2020)
+* Fix url encoding
+
 ## 1.2.10 (August 25, 2020)
 * Fix `application/x-www-form-urlencoded` encoding bug
 
