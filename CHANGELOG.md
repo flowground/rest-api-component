@@ -1,3 +1,6 @@
+## 1.2.12 (September 25, 2020)
+* Revert changes to url encoding
+
 ## 1.2.11 (September 6, 2020)
 * Fix url encoding
 
