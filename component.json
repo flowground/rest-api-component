@@ -2,6 +2,7 @@
   "title": "REST API",
   "description": "A generic connector for accessing HTTP and REST APIs .",
   "buildType": "docker",
+  "deprecated": true,
   "docsUrl": "https://github.com/elasticio/rest-api-component",
   "credentials": {
     "fields": {

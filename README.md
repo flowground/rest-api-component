@@ -1,5 +1,7 @@
 [![Circle CI][circle-image]][circle-url]
 
+# DEPRECATED COMPONENT. USE https://github.com/elasticio/rest-api-component-v2 instead
+
 # REST API component
 
 The **REST API component** is a simple yet powerful component that allows you to connect to any REST API without programming your own components and deploying them into the platform.

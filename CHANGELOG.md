@@ -1,3 +1,6 @@
+## 1.2.13 (October 8, 2020)
+Component got deprecated. Use https://github.com/elasticio/rest-api-component-v2 instead
+
 ## 1.2.12 (September 25, 2020)
 * Revert changes to url encoding
 
