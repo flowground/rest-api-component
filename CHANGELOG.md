@@ -1,6 +1,7 @@
 ## 1.2.14 (October 22, 2020)
 * Annual audit of the component code to check if it exposes a sensitive data in the logs
 * Update sailor version to 2.6.17
+* Update internal libraries versions
 
 ## 1.2.13 (October 8, 2020)
 * Component got deprecated. Use https://github.com/elasticio/rest-api-component-v2 instead

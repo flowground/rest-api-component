@@ -16,7 +16,7 @@
         "node": ">=12.13.0"
     },
     "dependencies": {
-        "@elastic.io/component-commons-library": "1.1.2",
+        "@elastic.io/component-commons-library": "1.1.4",
         "duplex": "1.0.0",
         "elasticio-node": "0.0.9",
         "elasticio-rest-node": "1.2.1",
