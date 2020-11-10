@@ -1,3 +1,7 @@
+## 1.2.16 (November 10, 2020)
+
+* Change logo to grayscale.
+
 ## 1.2.15 (November 6, 2020)
 * Update sailor version to 2.6.18
 
